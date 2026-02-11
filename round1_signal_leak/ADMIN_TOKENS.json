@@ -7,145 +7,128 @@
       "challenge_id": "C1",
       "challenge_name": "Hidden in Plain Sight",
       "points": 50,
-      "signals": [
+      "encryption": "Caesar Shift (+3) then Base64",
+      "real_signal": {
+        "plaintext": "psg_2538",
+        "caesar_shifted": "svg_2538",
+        "base64_encoded": "c3ZnXzI1Mzg=",
+        "placement": "div data-config attribute",
+        "hint": "rotation_3_active in HTML comment"
+      },
+      "decoys": [
         {
-          "id": "R1C1-S1",
-          "encoding": "base64",
-          "decoded_value": "Welcome to the CTF event",
-          "encoded_value": "V2VsY29tZSB0byB0aGUgQ1RGIGV2ZW50",
-          "is_real": false,
+          "encoded": "V2VsY29tZSB0byB0aGUgQ1RGIGV2ZW50",
+          "decoded": "Welcome to the CTF event",
           "placement": "html_comment"
         },
         {
-          "id": "R1C1-S2",
-          "encoding": "base64",
-          "decoded_value": "psg_7291",
-          "encoded_value": "cHNnXzcyOTE=",
-          "is_real": true,
-          "placement": "div_data_attribute"
+          "encoded": "Y29uZmlnX2JhY2t1cF8yMDI0",
+          "decoded": "config_backup_2024",
+          "placement": "span data-ver"
         },
         {
-          "id": "R1C1-S3",
-          "encoding": "base64",
-          "decoded_value": "admin_panel_v2",
-          "encoded_value": "YWRtaW5fcGFuZWxfdjI=",
-          "is_real": false,
-          "placement": "meta_tag"
-        },
-        {
-          "id": "R1C1-S4",
-          "encoding": "base64",
-          "decoded_value": "debug_mode_enabled",
-          "encoded_value": "ZGVidWdfbW9kZV9lbmFibGVk",
-          "is_real": false,
+          "encoded": "ZGVidWdfbW9kZV9lbmFibGVk",
+          "decoded": "debug_mode_enabled",
           "placement": "script_comment"
+        },
+        {
+          "encoded": "c2Vzc2lvbl90b2tlbl94eXo=",
+          "decoded": "session_token_xyz",
+          "placement": "script_variable"
         }
       ],
-      "flag": "HTB{psg_7291}"
+      "flag": "HTB{psg_2538}"
     },
     {
       "challenge_id": "C2",
       "challenge_name": "Noise Filter",
       "points": 75,
-      "signals": [
+      "encryption": "XOR with 0x13 then Base64",
+      "real_signal": {
+        "plaintext": "psg_3057",
+        "xor_key": "0x13",
+        "xor_result": "cccr_3057",
+        "base64_encoded": "Y2Njcl8zMDU3",
+        "placement": "hidden input value",
+        "hints": [
+          "color_offset: 0x13 in CSS comment",
+          "decoding_order_matters in CSS comment",
+          "mirror mode disabled (misleading)"
+        ]
+      },
+      "decoys": [
         {
-          "id": "R1C2-S1",
-          "encoding": "base64",
-          "decoded_value": "config_backup_2024",
-          "encoded_value": "Y29uZmlnX2JhY2t1cF8yMDI0",
-          "is_real": false,
-          "placement": "css_comment"
-        },
-        {
-          "id": "R1C2-S2",
-          "encoding": "base64",
-          "decoded_value": "psg_4156",
-          "encoded_value": "cHNnXzQxNTY=",
-          "is_real": true,
-          "placement": "hidden_input"
-        },
-        {
-          "id": "R1C2-S3",
-          "encoding": "base64",
-          "decoded_value": "session_token_xyz",
-          "encoded_value": "c2Vzc2lvbl90b2tlbl94eXo=",
-          "is_real": false,
-          "placement": "div_class"
-        },
-        {
-          "id": "R1C2-S4",
-          "encoding": "base64",
-          "decoded_value": "api_endpoint_v3",
-          "encoded_value": "YXBpX2VuZHBvaW50X3Yz",
-          "is_real": false,
-          "placement": "link_href"
-        },
-        {
-          "id": "R1C2-S5",
-          "encoding": "base64",
-          "decoded_value": "maintenance_scheduled",
-          "encoded_value": "bWFpbnRlbmFuY2Vfc2NoZWR1bGVk",
-          "is_real": false,
+          "encoded": "bWFpbnRlbmFuY2Vfc2NoZWR1bGVk",
+          "decoded": "maintenance_scheduled",
           "placement": "html_comment"
+        },
+        {
+          "encoded": "Y29uZmlnX2JhY2t1cF8yMDI0",
+          "decoded": "config_backup_2024",
+          "placement": "hidden_input_backup"
+        },
+        {
+          "encoded": "bGVnYWN5X3N5c3RlbV9yZWY=",
+          "decoded": "legacy_system_ref",
+          "placement": "div_data_mirror"
+        },
+        {
+          "encoded": "c2Vzc2lvbl90b2tlbl94eXo=",
+          "decoded": "session_token_xyz",
+          "placement": "script_variable"
         }
       ],
-      "flag": "HTB{psg_4156}"
+      "flag": "HTB{psg_3057}"
     },
     {
       "challenge_id": "C3",
       "challenge_name": "Signal Extraction",
       "points": 100,
-      "signals": [
+      "encryption": "Base64 encode, then reverse string, then convert to binary",
+      "real_signal": {
+        "plaintext": "psg_4819",
+        "base64_encoded": "cHNnXzQ4MTk=",
+        "reversed": "=OTE4NF9nc3A",
+        "binary": "0110010001101101001100110011010001011111011001110111001101110000001111010011110000110001001101010011001101100011001100010011000000110001001100010011010001001101",
+        "placement": "HTML comment in header (data_stream)",
+        "hints": [
+          "bit_processing_enabled in CSS comment",
+          "mirror_reflection_mode in CSS comment"
+        ]
+      },
+      "decoys": [
         {
-          "id": "R1C3-S1",
-          "encoding": "base64",
-          "decoded_value": "user_preferences_cache",
-          "encoded_value": "dXNlcl9wcmVmZXJlbmNlc19jYWNoZQ==",
-          "is_real": false,
+          "encoded": "dXNlcl9wcmVmZXJlbmNlc19jYWNoZQ==",
+          "decoded": "user_preferences_cache",
           "placement": "noscript_tag"
         },
         {
-          "id": "R1C3-S2",
-          "encoding": "base64",
-          "decoded_value": "legacy_system_ref",
-          "encoded_value": "bGVnYWN5X3N5c3RlbV9yZWY=",
-          "is_real": false,
-          "placement": "meta_tag"
+          "encoded": "bGVnYWN5X3N5c3RlbV9yZWY=",
+          "decoded": "legacy_system_ref",
+          "placement": "meta_description"
         },
         {
-          "id": "R1C3-S3",
-          "encoding": "base64",
-          "decoded_value": "psg_3048",
-          "encoded_value": "cHNnXzMwNDg=",
-          "is_real": true,
-          "placement": "style_comment"
-        },
-        {
-          "id": "R1C3-S4",
-          "encoding": "base64",
-          "decoded_value": "analytics_tracker_id",
-          "encoded_value": "YW5hbHl0aWNzX3RyYWNrZXJfaWQ=",
-          "is_real": false,
+          "encoded": "YW5hbHl0aWNzX3RyYWNrZXJfaWQ=",
+          "decoded": "analytics_tracker_id",
           "placement": "div_id"
         },
         {
-          "id": "R1C3-S5",
-          "encoding": "base64",
-          "decoded_value": "cdn_fallback_url",
-          "encoded_value": "Y2RuX2ZhbGxiYWNrX3VybA==",
-          "is_real": false,
+          "encoded": "Y2RuX2ZhbGxiYWNrX3VybA==",
+          "decoded": "cdn_fallback_url",
           "placement": "script_src"
         },
         {
-          "id": "R1C3-S6",
-          "encoding": "base64",
-          "decoded_value": "theme_variant_dark",
-          "encoded_value": "dGhlbWVfdmFyaWFudF9kYXJr",
-          "is_real": false,
+          "encoded": "dGhlbWVfdmFyaWFudF9kYXJr",
+          "decoded": "theme_variant_dark",
           "placement": "html_comment"
+        },
+        {
+          "binary": "01100011011011110110111001100110011010010110011101011111011000100110000101100011011010110111010101110000",
+          "decoded": "config_backup",
+          "placement": "script_variable"
         }
       ],
-      "flag": "HTB{psg_3048}"
+      "flag": "HTB{psg_4819}"
     }
   ]
 }

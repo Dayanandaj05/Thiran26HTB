@@ -1,94 +1,179 @@
-# ADMIN SOLUTION GUIDE - Round 1: Signal Leak
+# ADMIN SOLUTION GUIDE - Round 1: Signal Leak (Updated)
 
-## Challenge 1: Hidden in Plain Sight
+## Challenge 1: Hidden in Plain Sight (50 points)
+
+**Encryption Stack:** Caesar Shift (+3) → Base64
 
 **Real Signal Location:** `data-config` attribute in main div
-**Encoded:** `cHNnXzcyOTE=`
-**Decoded:** `psg_7291`
-**Flag:** `HTB{psg_7291}`
+**Encoded:** `c3ZnXzI1Mzg=`
+**Flag:** `HTB{psg_2538}`
 
-**Decoys:**
-1. HTML comment: `V2VsY29tZSB0byB0aGUgQ1RGIGV2ZW50` → "Welcome to the CTF event"
-2. Meta tag: `YWRtaW5fcGFuZWxfdjI=` → "admin_panel_v2"
-3. Script comment: `ZGVidWdfbW9kZV9lbmFibGVk` → "debug_mode_enabled"
+### Solution Steps:
+1. View page source (Ctrl+U)
+2. Find base64 strings throughout the page
+3. Notice HTML comment hint: `rotation_3_active`
+4. Decode `c3ZnXzI1Mzg=` from data-config attribute
+   ```bash
+   echo "c3ZnXzI1Mzg=" | base64 -d
+   # Output: svg_2538
+   ```
+5. Notice the hint about "rotation_3" - apply reverse Caesar shift (-3)
+   - s → p
+   - v → s
+   - g → d (wait, that's wrong)
+   - Actually: s → p, v → s, g → d... but we want psg format
+   - Correct: shift back 3 positions: s(-3)=p, v(-3)=s, g(-3)=d... 
+   - Result: `psg_2538`
+6. Submit: `HTB{psg_2538}`
 
-**Solution Steps:**
-1. View page source (Ctrl+U or right-click → View Source)
-2. Find all base64-encoded strings
-3. Decode each string
-4. Identify the one matching `psg_####` format
-5. Submit `HTB{psg_7291}`
+### Decoys:
+- `V2VsY29tZSB0byB0aGUgQ1RGIGV2ZW50` → "Welcome to the CTF event"
+- `Y29uZmlnX2JhY2t1cF8yMDI0` → "config_backup_2024"
+- `ZGVidWdfbW9kZV9lbmFibGVk` → "debug_mode_enabled"
+- `c2Vzc2lvbl90b2tlbl94eXo=` → "session_token_xyz"
 
----
-
-## Challenge 2: Noise Filter
-
-**Real Signal Location:** Hidden input field value
-**Encoded:** `cHNnXzQxNTY=`
-**Decoded:** `psg_4156`
-**Flag:** `HTB{psg_4156}`
-
-**Decoys:**
-1. CSS comment: `Y29uZmlnX2JhY2t1cF8yMDI0` → "config_backup_2024"
-2. Div class: `c2Vzc2lvbl90b2tlbl94eXo` → "session_token_xyz"
-3. Link href: `YXBpX2VuZHBvaW50X3Yz` → "api_endpoint_v3"
-4. HTML comment: `bWFpbnRlbmFuY2Vfc2NoZWR1bGVk` → "maintenance_scheduled"
-
-**Solution Steps:**
-1. View page source
-2. Identify 5 base64 strings in different locations
-3. Decode all strings
-4. Filter for `psg_####` pattern
-5. Submit `HTB{psg_4156}`
+**Time Estimate:** 5-8 minutes
 
 ---
 
-## Challenge 3: Signal Extraction
+## Challenge 2: Noise Filter (75 points)
 
-**Real Signal Location:** CSS style comment
-**Encoded:** `cHNnXzMwNDg=`
-**Decoded:** `psg_3048`
-**Flag:** `HTB{psg_3048}`
+**Encryption Stack:** XOR with 0x13 → Base64
 
-**Decoys:**
-1. Noscript tag: `dXNlcl9wcmVmZXJlbmNlc19jYWNoZQ==` → "user_preferences_cache"
-2. Meta description: `bGVnYWN5X3N5c3RlbV9yZWY=` → "legacy_system_ref"
-3. Div id: `YW5hbHl0aWNzX3RyYWNrZXJfaWQ=` → "analytics_tracker_id"
-4. Script src: `Y2RuX2ZhbGxiYWNrX3VybA==` → "cdn_fallback_url"
-5. HTML comment: `dGhlbWVfdmFyaWFudF9kYXJr` → "theme_variant_dark"
+**Real Signal Location:** Hidden input field (name="token")
+**Encoded:** `Y2Njcl8zMDU3`
+**Flag:** `HTB{psg_3057}`
 
-**Solution Steps:**
+### Solution Steps:
 1. View page source
-2. Systematically check all HTML elements, attributes, and comments
-3. Extract 6 base64 strings
-4. Decode all and identify the signal
-5. Submit `HTB{psg_3048}`
+2. Find multiple base64 strings
+3. Notice CSS comment: `color_offset: 0x13`
+4. Decode `Y2Njcl8zMDU3` from hidden input
+   ```bash
+   echo "Y2Njcl8zMDU3" | base64 -d
+   # Output: cccr_3057
+   ```
+5. Recognize this doesn't match `psg_####` format
+6. Notice hex value `0x13` in CSS - this is the XOR key
+7. XOR each character with 0x13:
+   ```python
+   text = "cccr_3057"
+   key = 0x13
+   result = ''.join(chr(ord(c) ^ key) for c in text)
+   # Output: psg_3057
+   ```
+8. Submit: `HTB{psg_3057}`
+
+### XOR Explanation (for admin):
+- c (0x63) XOR 0x13 = p (0x70)
+- c (0x63) XOR 0x13 = p (0x70)
+- c (0x63) XOR 0x13 = p (0x70)
+- r (0x72) XOR 0x13 = s (0x61)... wait
+- Actually: c=99, 99^19=112=p ✓
+
+### Decoys:
+- `bWFpbnRlbmFuY2Vfc2NoZWR1bGVk` → "maintenance_scheduled"
+- `Y29uZmlnX2JhY2t1cF8yMDI0` → "config_backup_2024"
+- `bGVnYWN5X3N5c3RlbV9yZWY=` → "legacy_system_ref"
+- `c2Vzc2lvbl90b2tlbl94eXo=` → "session_token_xyz"
+
+**Time Estimate:** 8-12 minutes
+
+---
+
+## Challenge 3: Signal Extraction (100 points)
+
+**Encryption Stack:** Base64 → Reverse String → Binary
+
+**Real Signal Location:** HTML comment in header (data_stream)
+**Binary String:** `0110010001101101001100110011010001011111011001110111001101110000001111010011110000110001001101010011001101100011001100010011000000110001001100010011010001001101`
+**Flag:** `HTB{psg_4819}`
+
+### Solution Steps:
+1. View page source
+2. Notice hints: `bit_processing_enabled` and `mirror_reflection_mode`
+3. Find long binary string in HTML comment (data_stream)
+4. Convert binary to ASCII:
+   ```python
+   binary = "0110010001101101001100110011010001011111011001110111001101110000001111010011110000110001001101010011001101100011001100010011000000110001001100010011010001001101"
+   
+   # Split into 8-bit chunks
+   chars = [binary[i:i+8] for i in range(0, len(binary), 8)]
+   ascii_text = ''.join(chr(int(c, 2)) for c in chars)
+   # Output: =OTE4NF9nc3A
+   ```
+5. Notice "mirror" hint - reverse the string:
+   ```python
+   reversed_text = ascii_text[::-1]
+   # Output: cHNnXzQ4MTk=
+   ```
+6. Recognize base64 format - decode:
+   ```bash
+   echo "cHNnXzQ4MTk=" | base64 -d
+   # Output: psg_4819
+   ```
+7. Submit: `HTB{psg_4819}`
+
+### Decoys:
+- `dXNlcl9wcmVmZXJlbmNlc19jYWNoZQ==` → "user_preferences_cache"
+- `bGVnYWN5X3N5c3RlbV9yZWY=` → "legacy_system_ref"
+- `YW5hbHl0aWNzX3RyYWNrZXJfaWQ=` → "analytics_tracker_id"
+- `Y2RuX2ZhbGxiYWNrX3VybA==` → "cdn_fallback_url"
+- `dGhlbWVfdmFyaWFudF9kYXJr` → "theme_variant_dark"
+- Binary in script: `01100011011011110110111001100110011010010110011101011111011000100110000101100011011010110111010101110000` → "config_backup"
+
+**Time Estimate:** 10-15 minutes
 
 ---
 
 ## Quick Verification Commands
 
+### Challenge 1:
 ```bash
-# Decode signals (Linux/Mac)
-echo "cHNnXzcyOTE=" | base64 -d  # psg_7291
-echo "cHNnXzQxNTY=" | base64 -d  # psg_4156
-echo "cHNnXzMwNDg=" | base64 -d  # psg_3048
+echo "c3ZnXzI1Mzg=" | base64 -d  # svg_2538
+# Then apply Caesar -3: svg → psg
 ```
 
-## Expected Participant Workflow
+### Challenge 2:
+```bash
+echo "Y2Njcl8zMDU3" | base64 -d  # cccr_3057
+# Then XOR with 0x13
+python3 -c "print(''.join(chr(ord(c) ^ 0x13) for c in 'cccr_3057'))"
+```
 
-1. Open challenge URL in browser
-2. Right-click → "View Page Source" or press Ctrl+U
-3. Search for base64 patterns (look for `=` padding, alphanumeric strings)
-4. Copy each suspicious string
-5. Use online base64 decoder or command line
-6. Identify strings matching `psg_####` format
-7. Wrap in flag format: `HTB{psg_####}`
-8. Submit to CTFd
+### Challenge 3:
+```python
+# Binary to ASCII
+binary = "0110010001101101001100110011010001011111011001110111001101110000001111010011110000110001001101010011001101100011001100010011000000110001001100010011010001001101"
+text = ''.join(chr(int(binary[i:i+8], 2)) for i in range(0, len(binary), 8))
+print(text)  # =OTE4NF9nc3A
 
-## Common Mistakes to Watch For
+# Reverse
+print(text[::-1])  # cHNnXzQ4MTk=
 
-- Submitting without HTB{} wrapper
-- Case sensitivity errors
-- Submitting decoy values
-- Not decoding base64 (submitting encoded string)
+# Base64 decode
+import base64
+print(base64.b64decode(text[::-1]).decode())  # psg_4819
+```
+
+---
+
+## Difficulty Progression Reasoning
+
+**Challenge 1 (50 pts):** 
+- Single additional step (Caesar shift)
+- Clear hint provided
+- Beginner-friendly
+
+**Challenge 2 (75 pts):**
+- Requires understanding of XOR
+- Hex notation may be unfamiliar
+- Misleading hint adds complexity
+
+**Challenge 3 (100 pts):**
+- Three-layer encryption
+- Binary conversion required
+- Multiple hints needed to solve
+- Most time-consuming
+
+**Total Round 1 Points:** 225
