@@ -176,6 +176,86 @@
             50% { opacity: 0.3; }
         }
         /* mirror_reflection_mode */
+        .hint-panel {
+            margin-top: 40px;
+            background: rgba(15, 15, 30, 0.6);
+            border-radius: 12px;
+            border: 1px solid rgba(138, 43, 226, 0.3);
+            overflow: hidden;
+        }
+        .hint-toggle {
+            padding: 15px 20px;
+            background: rgba(138, 43, 226, 0.2);
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all 0.3s ease;
+        }
+        .hint-toggle:hover {
+            background: rgba(138, 43, 226, 0.3);
+        }
+        .hint-toggle span {
+            color: #8a2be2;
+            font-weight: 600;
+            font-size: 0.95em;
+        }
+        .hint-arrow {
+            color: #8a2be2;
+            transition: transform 0.3s ease;
+        }
+        .hint-arrow.open {
+            transform: rotate(180deg);
+        }
+        .hint-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s ease;
+        }
+        .hint-content.open {
+            max-height: 600px;
+        }
+        .hint-level {
+            padding: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        .hint-level-title {
+            color: #00d4ff;
+            font-size: 0.85em;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 10px;
+        }
+        .hint-text {
+            color: #b8b8c8;
+            font-size: 0.95em;
+            line-height: 1.6;
+        }
+        .binary-btn {
+            margin-top: 15px;
+            padding: 10px 20px;
+            background: rgba(0, 212, 255, 0.2);
+            border: 1px solid #00d4ff;
+            border-radius: 6px;
+            color: #00d4ff;
+            cursor: pointer;
+            font-size: 0.9em;
+            transition: all 0.3s ease;
+        }
+        .binary-btn:hover {
+            background: rgba(0, 212, 255, 0.3);
+            box-shadow: 0 0 15px rgba(0, 212, 255, 0.3);
+        }
+        .binary-explanation {
+            margin-top: 15px;
+            padding: 15px;
+            background: rgba(0, 212, 255, 0.1);
+            border-left: 3px solid #00d4ff;
+            border-radius: 4px;
+            color: #d0d0e0;
+            font-size: 0.9em;
+            display: none;
+        }
     </style>
 </head>
 <body>
@@ -215,12 +295,51 @@
             <div class="stream-item"><span class="stream-status"></span>Cache hit ratio: 94.2%</div>
         </div>
         
+        <div class="hint-panel">
+            <div class="hint-toggle" onclick="toggleHints()">
+                <span>💡 Need a Hint?</span>
+                <span class="hint-arrow" id="hintArrow">▼</span>
+            </div>
+            <div class="hint-content" id="hintContent">
+                <div class="hint-level">
+                    <div class="hint-level-title">Hint Level 1</div>
+                    <div class="hint-text">Long strings of 0s and 1s are meaningful.</div>
+                </div>
+                <div class="hint-level">
+                    <div class="hint-level-title">Hint Level 2</div>
+                    <div class="hint-text">Split binary into 8-bit chunks.</div>
+                </div>
+                <div class="hint-level">
+                    <div class="hint-level-title">Hint Level 3</div>
+                    <div class="hint-text">Mirror usually means reverse.</div>
+                </div>
+                <div class="hint-level">
+                    <button class="binary-btn" onclick="toggleBinaryExplanation()">📖 Explain Binary</button>
+                    <div class="binary-explanation" id="binaryExplanation">
+                        💡 Each 8 bits represent one ASCII character. For example: 01000001 = 65 = 'A'
+                    </div>
+                </div>
+            </div>
+        </div>
+        
         <!-- dGhlbWVfdmFyaWFudF9kYXJr -->
     </div>
     
     <script src="Y2RuX2ZhbGxiYWNrX3VybA=="></script>
     <script>
         const binaryMode = "01100011011011110110111001100110011010010110011101011111011000100110000101100011011010110111010101110000";
+        
+        function toggleHints() {
+            const content = document.getElementById('hintContent');
+            const arrow = document.getElementById('hintArrow');
+            content.classList.toggle('open');
+            arrow.classList.toggle('open');
+        }
+        
+        function toggleBinaryExplanation() {
+            const explanation = document.getElementById('binaryExplanation');
+            explanation.style.display = explanation.style.display === 'none' || explanation.style.display === '' ? 'block' : 'none';
+        }
     </script>
 </body>
 </html>

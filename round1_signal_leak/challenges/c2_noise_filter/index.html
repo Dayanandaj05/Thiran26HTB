@@ -117,6 +117,12 @@
         input[type="text"]::placeholder {
             color: #666;
         }
+        .search-tooltip {
+            margin-top: 10px;
+            font-size: 0.85em;
+            color: #666;
+            font-style: italic;
+        }
         .activity-log {
             margin-top: 45px;
             padding: 25px;
@@ -166,6 +172,61 @@
             font-family: 'Courier New', monospace;
             font-size: 1em;
         }
+        .hint-panel {
+            margin-top: 40px;
+            background: rgba(15, 15, 30, 0.6);
+            border-radius: 12px;
+            border: 1px solid rgba(233, 69, 96, 0.3);
+            overflow: hidden;
+        }
+        .hint-toggle {
+            padding: 15px 20px;
+            background: rgba(233, 69, 96, 0.2);
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all 0.3s ease;
+        }
+        .hint-toggle:hover {
+            background: rgba(233, 69, 96, 0.3);
+        }
+        .hint-toggle span {
+            color: #e94560;
+            font-weight: 600;
+            font-size: 0.95em;
+        }
+        .hint-arrow {
+            color: #e94560;
+            transition: transform 0.3s ease;
+        }
+        .hint-arrow.open {
+            transform: rotate(180deg);
+        }
+        .hint-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s ease;
+        }
+        .hint-content.open {
+            max-height: 500px;
+        }
+        .hint-level {
+            padding: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        .hint-level-title {
+            color: #00d4ff;
+            font-size: 0.85em;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 10px;
+        }
+        .hint-text {
+            color: #b8b8c8;
+            font-size: 0.95em;
+            line-height: 1.6;
+        }
     </style>
 </head>
 <body>
@@ -193,6 +254,7 @@
             <input type="hidden" name="token" value="Z2RwSCMvJS4=">
             <input type="hidden" name="backup" value="Y29uZmlnX2JhY2t1cF8yMDI0">
             <input type="text" id="searchInput" placeholder="Search system logs...">
+            <div class="search-tooltip">Hint: Bitwise operations can transform text.</div>
         </form>
         
         <div id="mirrorReveal" class="hidden"></div>
@@ -206,6 +268,27 @@
             <div class="log-entry">14:28:33 - XOR cipher module loaded</div>
         </div>
         
+        <div class="hint-panel">
+            <div class="hint-toggle" onclick="toggleHints()">
+                <span>💡 Need a Hint?</span>
+                <span class="hint-arrow" id="hintArrow">▼</span>
+            </div>
+            <div class="hint-content" id="hintContent">
+                <div class="hint-level">
+                    <div class="hint-level-title">Hint Level 1</div>
+                    <div class="hint-text">Decode the Base64 first.</div>
+                </div>
+                <div class="hint-level">
+                    <div class="hint-level-title">Hint Level 2</div>
+                    <div class="hint-text">The CSS contains a hexadecimal clue.</div>
+                </div>
+                <div class="hint-level">
+                    <div class="hint-level-title">Hint Level 3</div>
+                    <div class="hint-text">XOR works character by character using ASCII values.</div>
+                </div>
+            </div>
+        </div>
+        
         <div class="hidden" data-mirror="bGVnYWN5X3N5c3RlbV9yZWY=">
             <!-- hint: mirror mode disabled -->
         </div>
@@ -214,6 +297,13 @@
     <script>
         const sessionKey = "c2Vzc2lvbl90b2tlbl94eXo=";
         // encryption_method: xor_single_byte
+        
+        function toggleHints() {
+            const content = document.getElementById('hintContent');
+            const arrow = document.getElementById('hintArrow');
+            content.classList.toggle('open');
+            arrow.classList.toggle('open');
+        }
         
         document.getElementById('searchInput').addEventListener('input', function(e) {
             const value = e.target.value.toLowerCase();

@@ -108,6 +108,90 @@
             0%, 100% { opacity: 1; transform: scale(1); }
             50% { opacity: 0.5; transform: scale(1.2); }
         }
+        .hint-panel {
+            margin-top: 40px;
+            background: rgba(15, 15, 30, 0.6);
+            border-radius: 12px;
+            border: 1px solid rgba(138, 43, 226, 0.3);
+            overflow: hidden;
+        }
+        .hint-toggle {
+            padding: 15px 20px;
+            background: rgba(138, 43, 226, 0.2);
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all 0.3s ease;
+        }
+        .hint-toggle:hover {
+            background: rgba(138, 43, 226, 0.3);
+        }
+        .hint-toggle span {
+            color: #8a2be2;
+            font-weight: 600;
+            font-size: 0.95em;
+        }
+        .hint-arrow {
+            color: #8a2be2;
+            transition: transform 0.3s ease;
+        }
+        .hint-arrow.open {
+            transform: rotate(180deg);
+        }
+        .hint-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s ease;
+        }
+        .hint-content.open {
+            max-height: 500px;
+        }
+        .hint-level {
+            padding: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        .hint-level-title {
+            color: #00d4ff;
+            font-size: 0.85em;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 10px;
+        }
+        .hint-text {
+            color: #b8b8c8;
+            font-size: 0.95em;
+            line-height: 1.6;
+        }
+        .rotate-input {
+            margin-top: 15px;
+            padding: 15px;
+            background: rgba(10, 10, 20, 0.5);
+            border-radius: 8px;
+        }
+        .rotate-input input {
+            width: 100%;
+            padding: 10px;
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(138, 43, 226, 0.3);
+            border-radius: 6px;
+            color: #fff;
+            font-size: 0.9em;
+            outline: none;
+        }
+        .rotate-input input:focus {
+            border-color: #8a2be2;
+        }
+        .rotate-hint {
+            margin-top: 10px;
+            padding: 10px;
+            background: rgba(138, 43, 226, 0.2);
+            border-left: 3px solid #8a2be2;
+            border-radius: 4px;
+            color: #d0d0e0;
+            font-size: 0.9em;
+            display: none;
+        }
     </style>
 </head>
 <body>
@@ -132,6 +216,33 @@
             </div>
         </div>
         
+        <div class="hint-panel">
+            <div class="hint-toggle" onclick="toggleHints()">
+                <span>💡 Need a Hint?</span>
+                <span class="hint-arrow" id="hintArrow">▼</span>
+            </div>
+            <div class="hint-content" id="hintContent">
+                <div class="hint-level">
+                    <div class="hint-level-title">Hint Level 1</div>
+                    <div class="hint-text">Base64 decoding is only the first step.</div>
+                </div>
+                <div class="hint-level">
+                    <div class="hint-level-title">Hint Level 2</div>
+                    <div class="hint-text">Look for clues about rotation in the HTML comments.</div>
+                </div>
+                <div class="hint-level">
+                    <div class="hint-level-title">Hint Level 3</div>
+                    <div class="hint-text">Only letters rotate. Numbers and symbols stay the same.</div>
+                </div>
+                <div class="rotate-input">
+                    <input type="text" id="rotateInput" placeholder="Type a keyword to unlock more help...">
+                    <div class="rotate-hint" id="rotateHint">
+                        💡 ROT = rotation. Try shifting letters backward.
+                    </div>
+                </div>
+            </div>
+        </div>
+        
         <div class="footer">
             <!-- rotation_3_active -->
             <span>System version: <span data-ver="Y29uZmlnX2JhY2t1cF8yMDI0">2.4.1</span></span>
@@ -143,6 +254,23 @@
         // ZGVidWdfbW9kZV9lbmFibGVk
         const apiEndpoint = "c2Vzc2lvbl90b2tlbl94eXo=";
         console.log('Page loaded successfully');
+        
+        function toggleHints() {
+            const content = document.getElementById('hintContent');
+            const arrow = document.getElementById('hintArrow');
+            content.classList.toggle('open');
+            arrow.classList.toggle('open');
+        }
+        
+        document.getElementById('rotateInput').addEventListener('input', function(e) {
+            const value = e.target.value.toLowerCase();
+            const hint = document.getElementById('rotateHint');
+            if (value === 'rotate' || value === 'rotation') {
+                hint.style.display = 'block';
+            } else {
+                hint.style.display = 'none';
+            }
+        });
     </script>
 </body>
 </html>
