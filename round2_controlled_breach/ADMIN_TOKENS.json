@@ -1,0 +1,74 @@
+{
+  "round": "R2",
+  "round_name": "Controlled Breach",
+  "flag_format": "HTB{psg_####}",
+  "challenge": {
+    "challenge_id": "C1",
+    "challenge_name": "Controlled Breach",
+    "points": 150,
+    "encryption": "Reverse → XOR (0x2A) → ROT13 → Base64",
+    "real_signal": {
+      "plaintext": "psg_8421",
+      "transformation_steps": [
+        {
+          "step": 1,
+          "operation": "Reverse String",
+          "input": "psg_8421",
+          "output": "1248_gsp"
+        },
+        {
+          "step": 2,
+          "operation": "XOR with 0x2A (decimal 42)",
+          "input": "1248_gsp",
+          "details": "1(49)^42=\u001b(27), 2(50)^42=\u0018(24), 4(52)^42=\u001e(30), 8(56)^42=\u0012(18), _(95)^42=u(117), g(103)^42=M(77), s(115)^42=Y(89), p(112)^42=Z(90)",
+          "output": "\u001b\u0018\u001e\u0012uMYZ"
+        },
+        {
+          "step": 3,
+          "operation": "ROT13 (letters only)",
+          "input": "\u001b\u0018\u001e\u0012uMYZ",
+          "details": "Non-letters unchanged, M→Z, Y→L, Z→M, u→h",
+          "output": "\u001b\u0018\u001e\u0012hZLM"
+        },
+        {
+          "step": 4,
+          "operation": "Base64 Encode",
+          "input": "\u001b\u0018\u001e\u0012hZLM",
+          "output": "GxgeEmhaTE0="
+        }
+      ],
+      "final_encoded": "GxgeEmhaTE0=",
+      "placement": "fake_api.json - auth_token field",
+      "hints": [
+        "api_endpoint comment in HTML",
+        "xor_key_hint in CSS",
+        "encryption_order in app.js",
+        "Network tab console logs"
+      ]
+    },
+    "decoys": [
+      {
+        "field": "checksum",
+        "value": "YWRtaW5fcGFuZWxfdjI=",
+        "decoded": "admin_panel_v2"
+      },
+      {
+        "field": "backup_token",
+        "value": "c2Vzc2lvbl90b2tlbl94eXo=",
+        "decoded": "session_token_xyz"
+      },
+      {
+        "field": "legacy_auth",
+        "value": "bGVnYWN5X3N5c3RlbV9yZWY=",
+        "decoded": "legacy_system_ref"
+      },
+      {
+        "field": "session_id",
+        "value": "Y29uZmlnX2JhY2t1cF8yMDI0",
+        "decoded": "config_backup_2024"
+      }
+    ],
+    "flag": "HTB{psg_8421}",
+    "verification": "Reverse Base64 → Reverse ROT13 → Reverse XOR → Reverse String"
+  }
+}

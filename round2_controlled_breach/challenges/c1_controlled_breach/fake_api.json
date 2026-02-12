@@ -1,0 +1,14 @@
+{
+  "status": "compromised",
+  "timestamp": "2024-01-15T14:32:18Z",
+  "auth_token": "GxgeEmhaTE0=",
+  "log_level": "debug_disabled",
+  "mirror_mode": false,
+  "checksum": "YWRtaW5fcGFuZWxfdjI=",
+  "backup_token": "c2Vzc2lvbl90b2tlbl94eXo=",
+  "legacy_auth": "bGVnYWN5X3N5c3RlbV9yZWY=",
+  "session_id": "Y29uZmlnX2JhY2t1cF8yMDI0",
+  "api_version": "v2.4.1",
+  "encryption_hint": "layers_matter",
+  "debug_flag": false
+}

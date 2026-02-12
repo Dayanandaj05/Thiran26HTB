@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Internal Developer Portal – BREACH DETECTED</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- api_endpoint: /api/internal/logs -->
+    <div class="container">
+        <div class="alert-banner">
+            <div class="alert-title">⚠️ SECURITY BREACH DETECTED</div>
+            <div class="alert-text">
+                Unauthorized access to internal systems detected at 14:32:18 UTC.
+                All authentication tokens have been compromised.
+                Immediate investigation required.
+            </div>
+        </div>
+
+        <h1>Internal Developer Portal</h1>
+        <p style="color: #888; margin-bottom: 30px;">
+            System monitoring and diagnostics interface
+        </p>
+
+        <div class="dashboard-grid">
+            <div class="dashboard-card">
+                <div class="card-title">Breach Status</div>
+                <div class="card-value" id="breachStatus">ACTIVE</div>
+            </div>
+            <div class="dashboard-card">
+                <div class="card-title">Compromised Tokens</div>
+                <div class="card-value">847</div>
+            </div>
+            <div class="dashboard-card">
+                <div class="card-title">API Version</div>
+                <div class="card-value" id="apiVersion">v2.4.1</div>
+            </div>
+            <div class="dashboard-card">
+                <div class="card-title">Response Time</div>
+                <div class="card-value">42ms</div>
+            </div>
+        </div>
+
+        <div class="activity-log">
+            <div class="log-title">System Activity Log</div>
+            <div class="log-entry">14:32:18 - [CRITICAL] Unauthorized API access detected</div>
+            <div class="log-entry">14:32:15 - [WARNING] Multiple failed authentication attempts</div>
+            <div class="log-entry">14:32:10 - [INFO] Token encryption layer bypassed</div>
+            <div class="log-entry">14:32:05 - [DEBUG] Internal logs endpoint accessed</div>
+            <div class="log-entry">14:31:58 - [INFO] Network inspection tools detected</div>
+        </div>
+
+        <!-- debug_panel_hidden -->
+        <div class="hint-console">
+            <div class="console-header" onclick="toggleConsole()">
+                <span class="console-title">🔐 DECRYPTION CONSOLE</span>
+                <span class="console-arrow" id="consoleArrow">▼</span>
+            </div>
+            <div class="console-body" id="consoleBody">
+                <div class="validation-box">
+                    <div class="validation-title">Step 1: Reverse String</div>
+                    <input type="text" class="validation-input" id="step1Input" placeholder="Enter reversed value...">
+                    <button class="validation-btn" onclick="validateStep1()">Verify</button>
+                    <div class="validation-result" id="step1Result"></div>
+                </div>
+
+                <div class="validation-box">
+                    <div class="validation-title">Step 2: Apply XOR</div>
+                    <input type="text" class="validation-input" id="step2Input" placeholder="Enter XOR result...">
+                    <button class="validation-btn" onclick="validateStep2()">Verify</button>
+                    <div class="validation-result" id="step2Result"></div>
+                </div>
+
+                <div class="validation-box">
+                    <div class="validation-title">Step 3: Apply ROT13</div>
+                    <input type="text" class="validation-input" id="step3Input" placeholder="Enter ROT13 result...">
+                    <button class="validation-btn" onclick="validateStep3()">Verify</button>
+                    <div class="validation-result" id="step3Result"></div>
+                </div>
+
+                <div class="validation-box">
+                    <div class="validation-title">Step 4: Final Decode</div>
+                    <input type="text" class="validation-input" id="step4Input" placeholder="Enter final signal...">
+                    <button class="validation-btn" onclick="validateStep4()">Verify</button>
+                    <div class="validation-result" id="step4Result"></div>
+                </div>
+
+                <div class="hint-item unlocked" id="hint1">
+                    <div class="hint-label">
+                        <span class="lock-icon">🔓</span>
+                        <span>HINT 1</span>
+                    </div>
+                    <div class="hint-text">Network tab may reveal more than the interface.</div>
+                </div>
+
+                <div class="hint-item locked" id="hint2">
+                    <div class="hint-label">
+                        <span class="lock-icon">🔒</span>
+                        <span>HINT 2</span>
+                    </div>
+                    <div class="hint-text">Some reflections must be undone first.</div>
+                </div>
+
+                <div class="hint-item locked" id="hint3">
+                    <div class="hint-label">
+                        <span class="lock-icon">🔒</span>
+                        <span>HINT 3</span>
+                    </div>
+                    <div class="hint-text">Single byte XOR — not all keys are visible.</div>
+                </div>
+
+                <div class="hint-item locked" id="hint4">
+                    <div class="hint-label">
+                        <span class="lock-icon">🔒</span>
+                        <span>HINT 4</span>
+                    </div>
+                    <div class="hint-text">ROT13 rotates letters only.</div>
+                </div>
+
+                <div class="hint-item locked" id="hint5">
+                    <div class="hint-label">
+                        <span class="lock-icon">🔒</span>
+                        <span>HINT 5</span>
+                    </div>
+                    <div class="hint-text">The final result may look familiar.</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
