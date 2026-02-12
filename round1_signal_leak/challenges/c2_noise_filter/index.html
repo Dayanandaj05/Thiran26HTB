@@ -143,6 +143,29 @@
         }
         /* decoding_order_matters */
         .hidden { display: none; }
+        .mirror-mode {
+            margin-top: 30px;
+            padding: 20px;
+            background: rgba(138, 43, 226, 0.2);
+            border: 2px solid #8a2be2;
+            border-radius: 12px;
+            animation: mirrorGlow 2s ease-in-out infinite;
+        }
+        @keyframes mirrorGlow {
+            0%, 100% { box-shadow: 0 0 20px rgba(138, 43, 226, 0.3); }
+            50% { box-shadow: 0 0 40px rgba(138, 43, 226, 0.6); }
+        }
+        .mirror-mode h3 {
+            color: #8a2be2;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+        .mirror-mode p {
+            color: #d0d0e0;
+            font-family: 'Courier New', monospace;
+            font-size: 1em;
+        }
     </style>
 </head>
 <body>
@@ -169,8 +192,10 @@
         <form>
             <input type="hidden" name="token" value="Z2RwSCMvJS4=">
             <input type="hidden" name="backup" value="Y29uZmlnX2JhY2t1cF8yMDI0">
-            <input type="text" placeholder="Search system logs...">
+            <input type="text" id="searchInput" placeholder="Search system logs...">
         </form>
+        
+        <div id="mirrorReveal" class="hidden"></div>
         
         <div class="activity-log">
             <div class="log-title">Recent Activity</div>
@@ -187,6 +212,19 @@
     
     <script>
         const sessionKey = "c2Vzc2lvbl90b2tlbl94eXo=";
+        
+        document.getElementById('searchInput').addEventListener('input', function(e) {
+            const value = e.target.value.toLowerCase();
+            const mirrorDiv = document.getElementById('mirrorReveal');
+            
+            if (value === 'mirror') {
+                mirrorDiv.className = 'mirror-mode';
+                mirrorDiv.innerHTML = '<h3>🔓 Mirror Mode Activated</h3><p>Status: Mirror reflection protocol enabled<br>Data stream: Reversed encoding detected<br>Hint: Some things are not what they seem...</p>';
+            } else {
+                mirrorDiv.className = 'hidden';
+                mirrorDiv.innerHTML = '';
+            }
+        });
     </script>
 </body>
 </html>
