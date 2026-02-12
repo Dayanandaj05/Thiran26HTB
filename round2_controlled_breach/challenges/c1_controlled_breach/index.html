@@ -59,28 +59,28 @@
             </div>
             <div class="console-body" id="consoleBody">
                 <div class="validation-box">
-                    <div class="validation-title">Step 1: Reverse String</div>
-                    <input type="text" class="validation-input" id="step1Input" placeholder="Enter reversed value...">
+                    <div class="validation-title">Step 1: Base64 Decode</div>
+                    <input type="text" class="validation-input" id="step1Input" placeholder="Enter decoded value...">
                     <button class="validation-btn" onclick="validateStep1()">Verify</button>
                     <div class="validation-result" id="step1Result"></div>
                 </div>
 
                 <div class="validation-box">
-                    <div class="validation-title">Step 2: Apply XOR</div>
-                    <input type="text" class="validation-input" id="step2Input" placeholder="Enter XOR result...">
+                    <div class="validation-title">Step 2: Apply ROT13</div>
+                    <input type="text" class="validation-input" id="step2Input" placeholder="Enter ROT13 result...">
                     <button class="validation-btn" onclick="validateStep2()">Verify</button>
                     <div class="validation-result" id="step2Result"></div>
                 </div>
 
                 <div class="validation-box">
-                    <div class="validation-title">Step 3: Apply ROT13</div>
-                    <input type="text" class="validation-input" id="step3Input" placeholder="Enter ROT13 result...">
+                    <div class="validation-title">Step 3: Apply XOR</div>
+                    <input type="text" class="validation-input" id="step3Input" placeholder="Enter XOR result...">
                     <button class="validation-btn" onclick="validateStep3()">Verify</button>
                     <div class="validation-result" id="step3Result"></div>
                 </div>
 
                 <div class="validation-box">
-                    <div class="validation-title">Step 4: Final Decode</div>
+                    <div class="validation-title">Step 4: Reverse String</div>
                     <input type="text" class="validation-input" id="step4Input" placeholder="Enter final signal...">
                     <button class="validation-btn" onclick="validateStep4()">Verify</button>
                     <div class="validation-result" id="step4Result"></div>
@@ -99,7 +99,7 @@
                         <span class="lock-icon">🔒</span>
                         <span>HINT 2</span>
                     </div>
-                    <div class="hint-text">Some reflections must be undone first.</div>
+                    <div class="hint-text">Base64 is just the outer layer.</div>
                 </div>
 
                 <div class="hint-item locked" id="hint3">
@@ -107,7 +107,7 @@
                         <span class="lock-icon">🔒</span>
                         <span>HINT 3</span>
                     </div>
-                    <div class="hint-text">Single byte XOR — not all keys are visible.</div>
+                    <div class="hint-text">ROT13 rotates letters only.</div>
                 </div>
 
                 <div class="hint-item locked" id="hint4">
@@ -115,7 +115,7 @@
                         <span class="lock-icon">🔒</span>
                         <span>HINT 4</span>
                     </div>
-                    <div class="hint-text">ROT13 rotates letters only.</div>
+                    <div class="hint-text">Single byte XOR — not all keys are visible.</div>
                 </div>
 
                 <div class="hint-item locked" id="hint5">
@@ -123,7 +123,7 @@
                         <span class="lock-icon">🔒</span>
                         <span>HINT 5</span>
                     </div>
-                    <div class="hint-text">The final result may look familiar.</div>
+                    <div class="hint-text">Some reflections must be undone last.</div>
                 </div>
             </div>
         </div>

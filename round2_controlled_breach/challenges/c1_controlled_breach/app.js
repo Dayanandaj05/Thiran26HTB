@@ -1,6 +1,19 @@
 // encryption_order: reverse_xor_rot13_base64
+// decryption_order: base64_rot13_xor_reverse
 const h = s => btoa(s.split('').reverse().join(''));
-const v = ['MTI0OF9nc3A=', 'WllNdRIeGBs=', 'TUxaaBIeGBs=', 'cHNnXzg0MjE='];
+const rot13 = s => s.replace(/[a-zA-Z]/g, c => String.fromCharCode(c.charCodeAt(0) + (c.toLowerCase() < 'n' ? 13 : -13)));
+const xorDecode = s => s.split('').map(c => String.fromCharCode(c.charCodeAt(0) ^ 0x2A)).join('');
+
+// v[0]: after base64 decode (binary with hZLM)
+// v[1]: after rot13 reverse (binary with uMYZ)
+// v[2]: after xor reverse (1248_gsp)
+// v[3]: final plaintext reversed (psg_8421)
+const v = [
+    h(String.fromCharCode(0x1b, 0x18, 0x1e, 0x12) + 'hZLM'),
+    h(String.fromCharCode(0x1b, 0x18, 0x1e, 0x12) + 'uMYZ'),
+    h('1248_gsp'),
+    h('psg_8421')
+];
 
 let apiData = null;
 
@@ -34,7 +47,9 @@ function validateStep1() {
     const input = document.getElementById('step1Input').value.trim();
     const result = document.getElementById('step1Result');
     
-    if (h(input) === v[0]) {
+    // Check if input matches base64 decoded result
+    const encoded = btoa(input);
+    if (encoded === btoa(String.fromCharCode(0x1b, 0x18, 0x1e, 0x12) + 'hZLM')) {
         result.className = 'validation-result success';
         result.textContent = '✓ Correct! Unlocking Hint 2...';
         result.style.display = 'block';
@@ -50,7 +65,9 @@ function validateStep2() {
     const input = document.getElementById('step2Input').value.trim();
     const result = document.getElementById('step2Result');
     
-    if (h(input) === v[1]) {
+    // Check if input matches ROT13 applied result
+    const encoded = btoa(input);
+    if (encoded === btoa(String.fromCharCode(0x1b, 0x18, 0x1e, 0x12) + 'uMYZ')) {
         result.className = 'validation-result success';
         result.textContent = '✓ Correct! Unlocking Hint 3...';
         result.style.display = 'block';
@@ -66,7 +83,8 @@ function validateStep3() {
     const input = document.getElementById('step3Input').value.trim();
     const result = document.getElementById('step3Result');
     
-    if (h(input) === v[2]) {
+    // Check if input matches XOR applied result
+    if (input === '1248_gsp') {
         result.className = 'validation-result success';
         result.textContent = '✓ Correct! Unlocking Hint 4...';
         result.style.display = 'block';
@@ -82,7 +100,8 @@ function validateStep4() {
     const input = document.getElementById('step4Input').value.trim();
     const result = document.getElementById('step4Result');
     
-    if (h(input) === v[3]) {
+    // Check if input matches final reversed plaintext
+    if (input === 'psg_8421') {
         result.className = 'validation-result success';
         result.textContent = '✓ Signal Extracted! Challenge Complete!';
         result.style.display = 'block';

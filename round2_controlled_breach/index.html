@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Controlled Breach Console</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="shell">
+        <header class="topbar">
+            <div>
+                <div class="kicker">Internal Security Dashboard</div>
+                <h1>Controlled Breach Response</h1>
+                <p class="subline">Validate each layer to restore signal integrity.</p>
+            </div>
+            <div class="status-card" id="statusCard">
+                <div class="status-label">Breach Status</div>
+                <div class="status-value" id="breachStatus">Loading</div>
+            </div>
+        </header>
+
+        <section class="grid">
+            <div class="panel">
+                <div class="panel-head">
+                    <h2>Incident Feed</h2>
+                    <span class="pill">Live</span>
+                </div>
+                <ul class="log" id="incidentLog">
+                    <li>14:32:18 - Unauthorized access detected</li>
+                    <li>14:32:12 - Token layer integrity degraded</li>
+                    <li>14:32:05 - Inspection tools observed</li>
+                    <li>14:31:59 - Containment protocol initiated</li>
+                </ul>
+            </div>
+
+            <div class="panel">
+                <div class="panel-head">
+                    <h2>Recovered Packet</h2>
+                    <span class="pill">API Snapshot</span>
+                </div>
+                <div class="token-block">
+                    <div class="token-label">auth_token</div>
+                    <div class="token-value" id="authToken">Fetching</div>
+                </div>
+                <div class="pipeline">
+                    <div class="pipeline-title">Decryption Order</div>
+                    <ol>
+                        <li>Base64 Decode</li>
+                        <li>ROT13 (letters only)</li>
+                        <li>XOR 0x2A</li>
+                        <li>Reverse string</li>
+                    </ol>
+                </div>
+            </div>
+        </section>
+
+        <section class="panel console">
+            <div class="panel-head">
+                <h2>Decryption Console</h2>
+                <span class="status" id="progressStatus">Awaiting Step 1</span>
+            </div>
+            <div class="steps">
+                <div class="step" data-step="1">
+                    <div class="step-title">Step 1: Base64 Decode</div>
+                    <div class="step-row">
+                        <input class="step-input" id="step1Input" type="text" placeholder="Decoded output">
+                        <button class="step-btn" data-action="verify" data-step="1">Verify</button>
+                    </div>
+                    <div class="step-result" id="step1Result"></div>
+                </div>
+
+                <div class="step is-locked" data-step="2">
+                    <div class="step-title">Step 2: Apply ROT13</div>
+                    <div class="step-row">
+                        <input class="step-input" id="step2Input" type="text" placeholder="ROT13 output" disabled>
+                        <button class="step-btn" data-action="verify" data-step="2" disabled>Verify</button>
+                    </div>
+                    <div class="step-result" id="step2Result"></div>
+                </div>
+
+                <div class="step is-locked" data-step="3">
+                    <div class="step-title">Step 3: Apply XOR</div>
+                    <div class="step-row">
+                        <input class="step-input" id="step3Input" type="text" placeholder="XOR output" disabled>
+                        <button class="step-btn" data-action="verify" data-step="3" disabled>Verify</button>
+                    </div>
+                    <div class="step-result" id="step3Result"></div>
+                </div>
+
+                <div class="step is-locked" data-step="4">
+                    <div class="step-title">Step 4: Reverse String</div>
+                    <div class="step-row">
+                        <input class="step-input" id="step4Input" type="text" placeholder="Final signal" disabled>
+                        <button class="step-btn" data-action="verify" data-step="4" disabled>Verify</button>
+                    </div>
+                    <div class="step-result" id="step4Result"></div>
+                </div>
+            </div>
+        </section>
+
+        <section class="panel hints">
+            <div class="panel-head">
+                <h2>Progressive Hints</h2>
+                <span class="pill">Locked</span>
+            </div>
+            <div class="hint unlocked" id="hint1">
+                <div class="hint-label"><span class="lock-icon">[open]</span> Hint 1</div>
+                <div class="hint-text">Network tab clue: inspect the API response.</div>
+            </div>
+            <div class="hint locked" id="hint2">
+                <div class="hint-label"><span class="lock-icon">[locked]</span> Hint 2</div>
+                <div class="hint-text">Base64 is the outer layer.</div>
+            </div>
+            <div class="hint locked" id="hint3">
+                <div class="hint-label"><span class="lock-icon">[locked]</span> Hint 3</div>
+                <div class="hint-text">ROT13 rotates letters only.</div>
+            </div>
+            <div class="hint locked" id="hint4">
+                <div class="hint-label"><span class="lock-icon">[locked]</span> Hint 4</div>
+                <div class="hint-text">The XOR key is hidden in CSS.</div>
+            </div>
+            <div class="hint locked" id="hint5">
+                <div class="hint-label"><span class="lock-icon">[locked]</span> Hint 5</div>
+                <div class="hint-text">Reverse is the final correction.</div>
+            </div>
+        </section>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>

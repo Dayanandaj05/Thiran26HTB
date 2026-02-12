@@ -1,0 +1,10 @@
+{
+  "status": "compromised",
+  "timestamp": "2026-02-12T14:32:18Z",
+  "auth_token": "GxgeEmhaTE0=",
+  "api_version": "v2.4.1",
+  "log_level": "debug_disabled",
+  "session_id": "Y29uZmlnX2JhY2t1cF8yMDI2",
+  "checksum": "YWRtaW5fcGFuZWxfdjI=",
+  "mirror_mode": false
+}

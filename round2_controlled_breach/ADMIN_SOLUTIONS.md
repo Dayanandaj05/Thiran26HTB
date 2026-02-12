@@ -79,22 +79,23 @@ echo -n $'\x1b\x18\x1e\x12hZLM' | base64
    - `auth_token` field contains: `GxgeEmhaTE0=`
    - Other fields are decoys
 
-5. **Decode Base64**
+5. **Step 1: Decode Base64**
    ```bash
    echo "GxgeEmhaTE0=" | base64 -d
    # Output: \x1b\x18\x1e\x12hZLM (binary data)
    ```
+   Enter this value in Step 1 input to unlock Hint 2.
 
-6. **Apply Reverse ROT13**
+6. **Step 2: Apply ROT13**
    ```python
-   def rot13_reverse(text):
+   def rot13(text):
        result = ""
        for char in text:
            if char.isalpha():
                if char.islower():
-                   result += chr((ord(char) - ord('a') - 13) % 26 + ord('a'))
+                   result += chr((ord(char) - ord('a') + 13) % 26 + ord('a'))
                else:
-                   result += chr((ord(char) - ord('A') - 13) % 26 + ord('A'))
+                   result += chr((ord(char) - ord('A') + 13) % 26 + ord('A'))
            else:
                result += char
        return result
@@ -102,20 +103,23 @@ echo -n $'\x1b\x18\x1e\x12hZLM' | base64
    # Input: \x1b\x18\x1e\x12hZLM
    # Output: \x1b\x18\x1e\x12uMYZ
    ```
+   Enter this value in Step 2 input to unlock Hint 3.
 
-7. **Apply Reverse XOR with 0x2A**
+7. **Step 3: Apply XOR with 0x2A**
    ```python
    text = "\x1b\x18\x1e\x12uMYZ"
    key = 0x2A
    result = ''.join(chr(ord(c) ^ key) for c in text)
    # Output: 1248_gsp
    ```
+   Enter `1248_gsp` in Step 3 input to unlock Hint 4.
 
-8. **Reverse the String**
+8. **Step 4: Reverse the String**
    ```python
    reversed_text = "1248_gsp"[::-1]
    # Output: psg_8421
    ```
+   Enter `psg_8421` in Step 4 input to complete the challenge.
 
 9. **Submit Flag**
    ```
@@ -140,26 +144,26 @@ print(f"Encrypted token: {encrypted}")
 step1 = base64.b64decode(encrypted)
 print(f"Step 1 (Base64 decode): {repr(step1)}")
 
-# Step 2: Reverse ROT13
-def rot13_reverse(data):
+# Step 2: Apply ROT13
+def rot13(data):
     result = bytearray()
     for byte in data:
         char = chr(byte)
         if char.isalpha():
             if char.islower():
-                result.append(ord(chr((ord(char) - ord('a') - 13) % 26 + ord('a'))))
+                result.append(ord(chr((ord(char) - ord('a') + 13) % 26 + ord('a'))))
             else:
-                result.append(ord(chr((ord(char) - ord('A') - 13) % 26 + ord('A'))))
+                result.append(ord(chr((ord(char) - ord('A') + 13) % 26 + ord('A'))))
         else:
             result.append(byte)
     return bytes(result)
 
-step2 = rot13_reverse(step1)
-print(f"Step 2 (Reverse ROT13): {repr(step2)}")
+step2 = rot13(step1)
+print(f"Step 2 (Apply ROT13): {repr(step2)}")
 
-# Step 3: Reverse XOR with 0x2A
+# Step 3: Apply XOR with 0x2A
 step3 = bytes([b ^ 0x2A for b in step2])
-print(f"Step 3 (Reverse XOR 0x2A): {step3.decode()}")
+print(f"Step 3 (Apply XOR 0x2A): {step3.decode()}")
 
 # Step 4: Reverse String
 step4 = step3.decode()[::-1]
@@ -174,8 +178,8 @@ print(f"\nFlag: HTB{{{step4}}}")
 
 Encrypted token: GxgeEmhaTE0=
 Step 1 (Base64 decode): b'\x1b\x18\x1e\x12hZLM'
-Step 2 (Reverse ROT13): b'\x1b\x18\x1e\x12uMYZ'
-Step 3 (Reverse XOR 0x2A): 1248_gsp
+Step 2 (Apply ROT13): b'\x1b\x18\x1e\x12uMYZ'
+Step 3 (Apply XOR 0x2A): 1248_gsp
 Step 4 (Reverse string): psg_8421
 
 Flag: HTB{psg_8421}
@@ -188,18 +192,18 @@ Flag: HTB{psg_8421}
 **Hint 1:** "Network tab may reveal more than the interface."
 - Directs participants to check browser DevTools Network tab
 
-**Hint 2:** "Some reflections must be undone first."
-- Suggests string reversal is involved
+**Hint 2:** "Base64 is just the outer layer."
+- Indicates Base64 is the first layer to decode
 
-**Hint 3:** "Single byte XOR — not all keys are visible."
+**Hint 3:** "ROT13 rotates letters only."
+- Clarifies that ROT13 only affects alphabetic characters
+
+**Hint 4:** "Single byte XOR — not all keys are visible."
 - Indicates XOR encryption with a single-byte key
 - Key is hidden in CSS comment: `xor_key_hint: 0x2A`
 
-**Hint 4:** "ROT13 rotates letters only."
-- Clarifies that ROT13 only affects alphabetic characters
-
-**Hint 5:** "The final result may look familiar."
-- Confirms the result matches the expected flag format
+**Hint 5:** "Some reflections must be undone last."
+- Suggests string reversal is the final step
 
 ---
 
