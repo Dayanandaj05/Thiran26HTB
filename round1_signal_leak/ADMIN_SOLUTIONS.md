@@ -1,4 +1,4 @@
-# ADMIN SOLUTION GUIDE - Round 1: Signal Leak (CORRECTED)
+# ADMIN SOLUTION GUIDE - Round 1: Signal Leak
 
 ## Challenge 1: Hidden in Plain Sight (50 points)
 

@@ -1,29 +1,29 @@
 {
   "round": "R1",
-  "round_name": "Signal Leak - Mathematically Verified",
+  "round_name": "Signal Leak",
   "flag_format": "HTB{psg_####}",
   "challenges": [
     {
       "challenge_id": "C1",
       "challenge_name": "Hidden in Plain Sight",
       "points": 50,
-      "encryption": "Caesar Shift (+3) then Base64",
+      "encryption": "Caesar Shift (+3, letters only) then Base64",
       "real_signal": {
         "plaintext": "psg_6742",
         "transformation_steps": [
           {
             "step": 1,
-            "operation": "Caesar Shift +3",
-            "details": "p(112)+3=s(115), s(115)+3=v(118), g(103)+3=j(106), _(95)+3=b(98), 6(54)+3=9(57), 7(55)+3=:(58), 4(52)+3=7(55), 2(50)+3=5(53)",
-            "result": "svjb9:75"
+            "operation": "Caesar Shift +3 (letters only)",
+            "details": "p→s, s→v, g→j, _→_ (unchanged), 6→6 (unchanged), 7→7 (unchanged), 4→4 (unchanged), 2→2 (unchanged)",
+            "result": "svj_6742"
           },
           {
             "step": 2,
             "operation": "Base64 Encode",
-            "result": "c3ZqYjk6NzU="
+            "result": "c3ZqXzY3NDI="
           }
         ],
-        "final_encoded": "c3ZqYjk6NzU=",
+        "final_encoded": "c3ZqXzY3NDI=",
         "placement": "div data-config attribute",
         "hint": "rotation_3_active in HTML comment"
       },
@@ -50,7 +50,7 @@
         }
       ],
       "flag": "HTB{psg_6742}",
-      "verification": "echo 'c3ZqYjk6NzU=' | base64 -d gives 'svjb9:75', Caesar -3 gives 'psg_6742'"
+      "verification": "echo 'c3ZqXzY3NDI=' | base64 -d gives 'svj_6742', Caesar -3 (letters only) gives 'psg_6742'"
     },
     {
       "challenge_id": "C2",
@@ -65,7 +65,7 @@
           {
             "step": 1,
             "operation": "XOR with 0x17",
-            "details": "p(112^23)=g(103), s(115^23)=d(100), g(103^23)=p(112), _(95^23)=H(72), 4(52^23)=#(35), 8(56^23)=/(47), 2(50^23)=%(37), 9(57^23)=.(46)",
+            "details": "p(112)^23=g(103), s(115)^23=d(100), g(103)^23=p(112), _(95)^23=H(72), 4(52)^23=#(35), 8(56)^23=/(47), 2(50)^23=%(37), 9(57)^23=.(46)",
             "result": "gdpH#/%."
           },
           {
@@ -79,7 +79,7 @@
         "hints": [
           "color_offset: 0x17 in CSS comment",
           "decoding_order_matters in CSS comment",
-          "mirror mode disabled (misleading)"
+          "XOR cipher module loaded in activity log"
         ]
       },
       "decoys": [

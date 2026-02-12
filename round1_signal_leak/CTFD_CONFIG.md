@@ -1,4 +1,4 @@
-# CTFd Challenge Configuration - Round 1: Signal Leak (Updated)
+# CTFd Challenge Configuration - Round 1: Signal Leak
 
 ## Challenge 1: Hidden in Plain Sight
 **Category:** Web / Cryptography
@@ -20,8 +20,9 @@ Flag format: HTB{psg_####}
 **Hints:**
 - Hint 1 (Free): "Base64 is just the beginning. Sometimes things rotate."
 - Hint 2 (10 pts): "Check the HTML comments for clues about rotation."
+- Hint 3 (15 pts): "Only letters rotate. Numbers and symbols stay the same."
 
-**Flag:** `HTB{psg_2538}`
+**Flag:** `HTB{psg_6742}`
 
 **Tags:** base64, caesar, rotation, encoding
 
@@ -48,7 +49,7 @@ Flag format: HTB{psg_####}
 - Hint 2 (15 pts): "CSS comments sometimes contain more than styling notes. Look for hex values."
 - Hint 3 (20 pts): "XOR is your friend. Single-byte key."
 
-**Flag:** `HTB{psg_3057}`
+**Flag:** `HTB{psg_4829}`
 
 **Tags:** base64, xor, hex, cryptography
 
@@ -76,7 +77,7 @@ Flag format: HTB{psg_####}
 - Hint 2 (20 pts): "Three steps: binary → ASCII → reverse → decode"
 - Hint 3 (25 pts): "Look for the longest binary string in comments. Mirror means reverse."
 
-**Flag:** `HTB{psg_4819}`
+**Flag:** `HTB{psg_3951}`
 
 **Tags:** binary, base64, reverse, encoding, multi-layer
 
@@ -123,7 +124,10 @@ Before event:
 - [ ] All challenge pages load correctly
 - [ ] View source works in all browsers
 - [ ] Encoded strings are visible
-- [ ] Flags validate correctly
+- [ ] Flags validate correctly:
+  - Challenge 1: `HTB{psg_6742}`
+  - Challenge 2: `HTB{psg_4829}`
+  - Challenge 3: `HTB{psg_3951}`
 - [ ] Hints display properly
 - [ ] Scoreboard updates in real-time
 
@@ -181,3 +185,13 @@ Allowed and expected:
 - If flags not validating: check case sensitivity
 - If pages not loading: verify web server and network
 - If participants can't find signals: remind them to view source
+
+---
+
+## Flag Summary (Admin Reference)
+
+| Challenge | Flag |
+|-----------|------|
+| C1 | HTB{psg_6742} |
+| C2 | HTB{psg_4829} |
+| C3 | HTB{psg_3951} |
