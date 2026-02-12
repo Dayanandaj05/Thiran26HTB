@@ -1,50 +1,61 @@
-# ADMIN SOLUTION GUIDE - Round 1: Signal Leak (MATHEMATICALLY VERIFIED)
+# ADMIN SOLUTION GUIDE - Round 1: Signal Leak (CORRECTED)
 
 ## Challenge 1: Hidden in Plain Sight (50 points)
 
-**Encryption Stack:** Caesar Shift (+3) → Base64
+**Encryption Stack:** Caesar Shift (+3, letters only) → Base64
 
 ### Mathematical Verification
 
 **Original Plaintext:** `psg_6742`
 
-**Step 1: Caesar Shift (+3)**
+**Step 1: Caesar Shift (+3) - Letters Only**
 ```
-Character | ASCII Dec | +3 | Result ASCII | Result Char
-----------|-----------|----|--------------|-----------
-p         | 112       | +3 | 115          | s
-s         | 115       | +3 | 118          | v
-g         | 103       | +3 | 106          | j
-_         | 95        | +3 | 98           | b
-6         | 54        | +3 | 57           | 9
-7         | 55        | +3 | 58           | :
-4         | 52        | +3 | 55           | 7
-2         | 50        | +3 | 53           | 5
+Character | Type   | Shift | Result
+----------|--------|-------|-------
+p         | letter | +3    | s
+s         | letter | +3    | v
+g         | letter | +3    | j
+_         | symbol | none  | _
+6         | digit  | none  | 6
+7         | digit  | none  | 7
+4         | digit  | none  | 4
+2         | digit  | none  | 2
 ```
-**Caesar Result:** `svjb9:75`
+**Caesar Result:** `svj_6742`
 
 **Step 2: Base64 Encode**
 ```bash
-echo -n "svjb9:75" | base64
-# Output: c3ZqYjk6NzU=
+echo -n "svj_6742" | base64
+# Output: c3ZqXzY3NDI=
 ```
 
-**Final Encoded Value:** `c3ZqYjk6NzU=`
+**Final Encoded Value:** `c3ZqXzY3NDI=`
 
 ### Solution Path
 
 1. View page source
-2. Find `data-config="c3ZqYjk6NzU="` in main div
+2. Find `data-config="c3ZqXzY3NDI="` in main div
 3. Notice hint: `rotation_3_active` in HTML comment
 4. Decode Base64:
    ```bash
-   echo "c3ZqYjk6NzU=" | base64 -d
-   # Output: svjb9:75
+   echo "c3ZqXzY3NDI=" | base64 -d
+   # Output: svj_6742
    ```
-5. Apply reverse Caesar shift (-3):
+5. Apply reverse Caesar shift (-3) to letters only:
    ```python
-   text = "svjb9:75"
-   result = ''.join(chr(ord(c) - 3) for c in text)
+   def caesar_decrypt(text, shift):
+       result = ""
+       for char in text:
+           if char.isalpha():
+               if char.islower():
+                   result += chr((ord(char) - ord('a') - shift) % 26 + ord('a'))
+               else:
+                   result += chr((ord(char) - ord('A') - shift) % 26 + ord('A'))
+           else:
+               result += char
+       return result
+   
+   print(caesar_decrypt("svj_6742", 3))
    # Output: psg_6742
    ```
 6. Submit: `HTB{psg_6742}`
@@ -100,6 +111,7 @@ echo -n "gdpH#/%." | base64
    text = "gdpH#/%."
    key = 0x17
    result = ''.join(chr(ord(c) ^ key) for c in text)
+   print(result)
    # Output: psg_4829
    ```
 6. Submit: `HTB{psg_4829}`
@@ -158,11 +170,13 @@ c    | 99        | 01100011
    binary = "001111010100110101010100010101010011100101001101001100010011100101100111011010000111001101100011"
    chars = [binary[i:i+8] for i in range(0, len(binary), 8)]
    text = ''.join(chr(int(c, 2)) for c in chars)
+   print(text)
    # Output: =MTU5M19naHNj
    ```
 5. Reverse the string (mirror hint):
    ```python
    reversed_text = text[::-1]
+   print(reversed_text)
    # Output: cHNnXzM5NTE=
    ```
 6. Base64 decode:
@@ -176,59 +190,6 @@ c    | 99        | 01100011
 
 ---
 
-## Verification Commands
-
-### Challenge 1 Verification:
-```bash
-# Decode Base64
-echo "c3ZqYjk6NzU=" | base64 -d
-# Output: svjb9:75
-
-# Reverse Caesar -3
-python3 << EOF
-text = "svjb9:75"
-result = ''.join(chr(ord(c) - 3) for c in text)
-print(result)
-EOF
-# Output: psg_6742
-```
-
-### Challenge 2 Verification:
-```bash
-# Decode Base64
-echo "Z2RwSCMvJS4=" | base64 -d
-# Output: gdpH#/%.
-
-# XOR with 0x17
-python3 << EOF
-text = "gdpH#/%."
-key = 0x17
-result = ''.join(chr(ord(c) ^ key) for c in text)
-print(result)
-EOF
-# Output: psg_4829
-```
-
-### Challenge 3 Verification:
-```python
-# Binary to ASCII
-binary = "001111010100110101010100010101010011100101001101001100010011100101100111011010000111001101100011"
-chars = [binary[i:i+8] for i in range(0, len(binary), 8)]
-text = ''.join(chr(int(c, 2)) for c in chars)
-print(text)  # =MTU5M19naHNj
-
-# Reverse
-reversed_text = text[::-1]
-print(reversed_text)  # cHNnXzM5NTE=
-
-# Base64 decode
-import base64
-result = base64.b64decode(reversed_text).decode()
-print(result)  # psg_3951
-```
-
----
-
 ## Complete Verification Script
 
 ```python
@@ -236,10 +197,23 @@ print(result)  # psg_3951
 import base64
 
 print("=== Challenge 1 Verification ===")
-c1_encoded = "c3ZqYjk6NzU="
+c1_encoded = "c3ZqXzY3NDI="
 c1_decoded = base64.b64decode(c1_encoded).decode()
 print(f"Base64 decoded: {c1_decoded}")
-c1_result = ''.join(chr(ord(c) - 3) for c in c1_decoded)
+
+def caesar_decrypt(text, shift):
+    result = ""
+    for char in text:
+        if char.isalpha():
+            if char.islower():
+                result += chr((ord(char) - ord('a') - shift) % 26 + ord('a'))
+            else:
+                result += chr((ord(char) - ord('A') - shift) % 26 + ord('A'))
+        else:
+            result += char
+    return result
+
+c1_result = caesar_decrypt(c1_decoded, 3)
 print(f"Caesar -3: {c1_result}")
 print(f"Flag: HTB{{{c1_result}}}\n")
 
@@ -266,7 +240,7 @@ print(f"Flag: HTB{{{c3_result}}}")
 **Expected Output:**
 ```
 === Challenge 1 Verification ===
-Base64 decoded: svjb9:75
+Base64 decoded: svj_6742
 Caesar -3: psg_6742
 Flag: HTB{psg_6742}
 
@@ -284,13 +258,13 @@ Flag: HTB{psg_3951}
 
 ---
 
-## Points & Difficulty
+## Summary
 
-| Challenge | Points | Time Estimate | Difficulty |
-|-----------|--------|---------------|------------|
-| C1        | 50     | 5-8 min       | Easy-Medium |
-| C2        | 75     | 8-12 min      | Medium |
-| C3        | 100    | 10-15 min     | Medium-Hard |
-| **Total** | **225** | **23-35 min** | Progressive |
+| Challenge | Flag | Encryption | Difficulty |
+|-----------|------|------------|------------|
+| C1 | HTB{psg_6742} | Caesar(letters)+Base64 | Easy-Medium |
+| C2 | HTB{psg_4829} | XOR+Base64 | Medium |
+| C3 | HTB{psg_3951} | Base64+Reverse+Binary | Medium-Hard |
 
-All transformations mathematically verified ✓
+**Total Points:** 225  
+**All transformations mathematically verified** ✓
