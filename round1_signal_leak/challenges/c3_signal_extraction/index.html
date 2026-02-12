@@ -176,14 +176,14 @@
             50% { opacity: 0.3; }
         }
         /* mirror_reflection_mode */
-        .hint-panel {
+        .hint-console {
             margin-top: 40px;
-            background: rgba(15, 15, 30, 0.6);
+            background: rgba(15, 15, 30, 0.7);
             border-radius: 12px;
             border: 1px solid rgba(138, 43, 226, 0.3);
             overflow: hidden;
         }
-        .hint-toggle {
+        .console-header {
             padding: 15px 20px;
             background: rgba(138, 43, 226, 0.2);
             cursor: pointer;
@@ -192,69 +192,121 @@
             align-items: center;
             transition: all 0.3s ease;
         }
-        .hint-toggle:hover {
+        .console-header:hover {
             background: rgba(138, 43, 226, 0.3);
         }
-        .hint-toggle span {
+        .console-title {
             color: #8a2be2;
             font-weight: 600;
             font-size: 0.95em;
         }
-        .hint-arrow {
+        .console-arrow {
             color: #8a2be2;
             transition: transform 0.3s ease;
         }
-        .hint-arrow.open {
+        .console-arrow.open {
             transform: rotate(180deg);
         }
-        .hint-content {
+        .console-body {
             max-height: 0;
             overflow: hidden;
             transition: max-height 0.4s ease;
         }
-        .hint-content.open {
-            max-height: 600px;
+        .console-body.open {
+            max-height: 1000px;
         }
-        .hint-level {
+        .validation-box {
             padding: 20px;
-            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
         }
-        .hint-level-title {
+        .validation-title {
             color: #00d4ff;
+            font-size: 0.9em;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        .validation-input {
+            width: 100%;
+            padding: 12px;
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(138, 43, 226, 0.3);
+            border-radius: 6px;
+            color: #fff;
+            font-size: 0.9em;
+            outline: none;
+            font-family: 'Courier New', monospace;
+        }
+        .validation-input:focus {
+            border-color: #8a2be2;
+            box-shadow: 0 0 10px rgba(138, 43, 226, 0.3);
+        }
+        .validation-btn {
+            margin-top: 10px;
+            padding: 10px 20px;
+            background: rgba(138, 43, 226, 0.3);
+            border: 1px solid #8a2be2;
+            border-radius: 6px;
+            color: #8a2be2;
+            cursor: pointer;
+            font-size: 0.9em;
+            transition: all 0.3s ease;
+        }
+        .validation-btn:hover {
+            background: rgba(138, 43, 226, 0.5);
+            box-shadow: 0 0 15px rgba(138, 43, 226, 0.4);
+        }
+        .validation-result {
+            margin-top: 10px;
+            padding: 10px;
+            border-radius: 6px;
+            font-size: 0.85em;
+            display: none;
+        }
+        .validation-result.success {
+            background: rgba(0, 255, 136, 0.1);
+            border: 1px solid #00ff88;
+            color: #00ff88;
+        }
+        .validation-result.error {
+            background: rgba(233, 69, 96, 0.1);
+            border: 1px solid #e94560;
+            color: #e94560;
+        }
+        .hint-item {
+            padding: 20px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            position: relative;
+        }
+        .hint-item.locked {
+            filter: blur(3px);
+            pointer-events: none;
+            opacity: 0.5;
+        }
+        .hint-item.unlocked {
+            animation: unlockGlow 0.6s ease;
+        }
+        @keyframes unlockGlow {
+            0%, 100% { box-shadow: none; }
+            50% { box-shadow: 0 0 20px rgba(138, 43, 226, 0.5); }
+        }
+        .hint-label {
+            color: #8a2be2;
             font-size: 0.85em;
             text-transform: uppercase;
             letter-spacing: 1px;
-            margin-bottom: 10px;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
         .hint-text {
             color: #b8b8c8;
             font-size: 0.95em;
             line-height: 1.6;
         }
-        .binary-btn {
-            margin-top: 15px;
-            padding: 10px 20px;
-            background: rgba(0, 212, 255, 0.2);
-            border: 1px solid #00d4ff;
-            border-radius: 6px;
-            color: #00d4ff;
-            cursor: pointer;
-            font-size: 0.9em;
-            transition: all 0.3s ease;
-        }
-        .binary-btn:hover {
-            background: rgba(0, 212, 255, 0.3);
-            box-shadow: 0 0 15px rgba(0, 212, 255, 0.3);
-        }
-        .binary-explanation {
-            margin-top: 15px;
-            padding: 15px;
-            background: rgba(0, 212, 255, 0.1);
-            border-left: 3px solid #00d4ff;
-            border-radius: 4px;
-            color: #d0d0e0;
-            font-size: 0.9em;
-            display: none;
+        .lock-icon {
+            font-size: 1.2em;
         }
     </style>
 </head>
@@ -295,29 +347,55 @@
             <div class="stream-item"><span class="stream-status"></span>Cache hit ratio: 94.2%</div>
         </div>
         
-        <div class="hint-panel">
-            <div class="hint-toggle" onclick="toggleHints()">
-                <span>💡 Need a Hint?</span>
-                <span class="hint-arrow" id="hintArrow">▼</span>
+        <div class="hint-console">
+            <div class="console-header" onclick="toggleConsole()">
+                <span class="console-title">🔐 HINT CONSOLE</span>
+                <span class="console-arrow" id="consoleArrow">▼</span>
             </div>
-            <div class="hint-content" id="hintContent">
-                <div class="hint-level">
-                    <div class="hint-level-title">Hint Level 1</div>
-                    <div class="hint-text">Long strings of 0s and 1s are meaningful.</div>
+            <div class="console-body" id="consoleBody">
+                <div class="validation-box">
+                    <div class="validation-title">Step 1: Binary to ASCII</div>
+                    <input type="text" class="validation-input" id="step1Input" placeholder="Enter ASCII result...">
+                    <button class="validation-btn" onclick="validateStep1()">Verify</button>
+                    <div class="validation-result" id="step1Result"></div>
                 </div>
-                <div class="hint-level">
-                    <div class="hint-level-title">Hint Level 2</div>
-                    <div class="hint-text">Split binary into 8-bit chunks.</div>
+                
+                <div class="validation-box">
+                    <div class="validation-title">Step 2: Reverse String</div>
+                    <input type="text" class="validation-input" id="step2Input" placeholder="Enter reversed string...">
+                    <button class="validation-btn" onclick="validateStep2()">Verify</button>
+                    <div class="validation-result" id="step2Result"></div>
                 </div>
-                <div class="hint-level">
-                    <div class="hint-level-title">Hint Level 3</div>
-                    <div class="hint-text">Mirror usually means reverse.</div>
+                
+                <div class="validation-box">
+                    <div class="validation-title">Step 3: Final Decode</div>
+                    <input type="text" class="validation-input" id="step3Input" placeholder="Enter final signal...">
+                    <button class="validation-btn" onclick="validateStep3()">Verify</button>
+                    <div class="validation-result" id="step3Result"></div>
                 </div>
-                <div class="hint-level">
-                    <button class="binary-btn" onclick="toggleBinaryExplanation()">📖 Explain Binary</button>
-                    <div class="binary-explanation" id="binaryExplanation">
-                        💡 Each 8 bits represent one ASCII character. For example: 01000001 = 65 = 'A'
+                
+                <div class="hint-item unlocked" id="hint1">
+                    <div class="hint-label">
+                        <span class="lock-icon">🔓</span>
+                        <span>HINT 1</span>
                     </div>
+                    <div class="hint-text">Long binary strings should be chunked into 8 bits.</div>
+                </div>
+                
+                <div class="hint-item locked" id="hint2">
+                    <div class="hint-label">
+                        <span class="lock-icon">🔒</span>
+                        <span>HINT 2</span>
+                    </div>
+                    <div class="hint-text">Mirror means reverse.</div>
+                </div>
+                
+                <div class="hint-item locked" id="hint3">
+                    <div class="hint-label">
+                        <span class="lock-icon">🔒</span>
+                        <span>HINT 3</span>
+                    </div>
+                    <div class="hint-text">Final step is Base64 decode.</div>
                 </div>
             </div>
         </div>
@@ -329,16 +407,69 @@
     <script>
         const binaryMode = "01100011011011110110111001100110011010010110011101011111011000100110000101100011011010110111010101110000";
         
-        function toggleHints() {
-            const content = document.getElementById('hintContent');
-            const arrow = document.getElementById('hintArrow');
-            content.classList.toggle('open');
+        const h = s => btoa(s.split('').reverse().join(''));
+        const v = [h('=MTU5M19naHNj'), h('cHNnXzM5NTE='), h('psg_3951')];
+        
+        function toggleConsole() {
+            const body = document.getElementById('consoleBody');
+            const arrow = document.getElementById('consoleArrow');
+            body.classList.toggle('open');
             arrow.classList.toggle('open');
         }
         
-        function toggleBinaryExplanation() {
-            const explanation = document.getElementById('binaryExplanation');
-            explanation.style.display = explanation.style.display === 'none' || explanation.style.display === '' ? 'block' : 'none';
+        function validateStep1() {
+            const input = document.getElementById('step1Input').value.trim();
+            const result = document.getElementById('step1Result');
+            
+            if (h(input) === v[0]) {
+                result.className = 'validation-result success';
+                result.textContent = '✓ Correct! Unlocking Hint 2...';
+                result.style.display = 'block';
+                unlockHint('hint2');
+            } else {
+                result.className = 'validation-result error';
+                result.textContent = '✗ Incorrect. Try again.';
+                result.style.display = 'block';
+            }
+        }
+        
+        function validateStep2() {
+            const input = document.getElementById('step2Input').value.trim();
+            const result = document.getElementById('step2Result');
+            
+            if (h(input) === v[1]) {
+                result.className = 'validation-result success';
+                result.textContent = '✓ Correct! Unlocking Hint 3...';
+                result.style.display = 'block';
+                unlockHint('hint3');
+            } else {
+                result.className = 'validation-result error';
+                result.textContent = '✗ Incorrect. Try again.';
+                result.style.display = 'block';
+            }
+        }
+        
+        function validateStep3() {
+            const input = document.getElementById('step3Input').value.trim();
+            const result = document.getElementById('step3Result');
+            
+            if (h(input) === v[2]) {
+                result.className = 'validation-result success';
+                result.textContent = '✓ Signal Extracted! Challenge Complete!';
+                result.style.display = 'block';
+            } else {
+                result.className = 'validation-result error';
+                result.textContent = '✗ Incorrect. Try again.';
+                result.style.display = 'block';
+            }
+        }
+        
+        function unlockHint(hintId) {
+            const hint = document.getElementById(hintId);
+            hint.classList.remove('locked');
+            hint.classList.add('unlocked');
+            const icon = hint.querySelector('.lock-icon');
+            icon.textContent = '🔓';
         }
     </script>
 </body>

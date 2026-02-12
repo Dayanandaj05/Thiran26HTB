@@ -35,16 +35,11 @@
             border: 1px solid rgba(255, 255, 255, 0.05);
             transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
-        .container:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 12px 48px rgba(0, 0, 0, 0.5), 0 0 100px rgba(138, 43, 226, 0.15);
-        }
         h1 {
             color: #00d4ff;
             font-size: 2.5em;
             margin-bottom: 20px;
             text-shadow: 0 0 20px rgba(0, 212, 255, 0.3);
-            letter-spacing: -0.5px;
         }
         p {
             line-height: 1.8;
@@ -67,11 +62,6 @@
             border-left: 3px solid #8a2be2;
             transition: all 0.3s ease;
         }
-        .status-item:hover {
-            background: rgba(15, 15, 30, 0.8);
-            border-left-color: #00d4ff;
-            transform: translateX(5px);
-        }
         .status-label {
             font-size: 0.85em;
             color: #888;
@@ -83,16 +73,6 @@
             font-size: 1.3em;
             color: #00d4ff;
             font-weight: 600;
-        }
-        .footer {
-            margin-top: 50px;
-            padding-top: 25px;
-            border-top: 1px solid rgba(255, 255, 255, 0.08);
-            font-size: 0.9em;
-            color: #666;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
         }
         .pulse {
             display: inline-block;
@@ -108,14 +88,14 @@
             0%, 100% { opacity: 1; transform: scale(1); }
             50% { opacity: 0.5; transform: scale(1.2); }
         }
-        .hint-panel {
+        .hint-console {
             margin-top: 40px;
-            background: rgba(15, 15, 30, 0.6);
+            background: rgba(15, 15, 30, 0.7);
             border-radius: 12px;
             border: 1px solid rgba(138, 43, 226, 0.3);
             overflow: hidden;
         }
-        .hint-toggle {
+        .console-header {
             padding: 15px 20px;
             background: rgba(138, 43, 226, 0.2);
             cursor: pointer;
@@ -124,73 +104,131 @@
             align-items: center;
             transition: all 0.3s ease;
         }
-        .hint-toggle:hover {
+        .console-header:hover {
             background: rgba(138, 43, 226, 0.3);
         }
-        .hint-toggle span {
+        .console-title {
             color: #8a2be2;
             font-weight: 600;
             font-size: 0.95em;
         }
-        .hint-arrow {
+        .console-arrow {
             color: #8a2be2;
             transition: transform 0.3s ease;
         }
-        .hint-arrow.open {
+        .console-arrow.open {
             transform: rotate(180deg);
         }
-        .hint-content {
+        .console-body {
             max-height: 0;
             overflow: hidden;
             transition: max-height 0.4s ease;
         }
-        .hint-content.open {
-            max-height: 500px;
+        .console-body.open {
+            max-height: 800px;
         }
-        .hint-level {
+        .validation-box {
             padding: 20px;
-            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
         }
-        .hint-level-title {
+        .validation-title {
             color: #00d4ff;
-            font-size: 0.85em;
+            font-size: 0.9em;
+            margin-bottom: 10px;
             text-transform: uppercase;
             letter-spacing: 1px;
-            margin-bottom: 10px;
         }
-        .hint-text {
-            color: #b8b8c8;
-            font-size: 0.95em;
-            line-height: 1.6;
-        }
-        .rotate-input {
-            margin-top: 15px;
-            padding: 15px;
-            background: rgba(10, 10, 20, 0.5);
-            border-radius: 8px;
-        }
-        .rotate-input input {
+        .validation-input {
             width: 100%;
-            padding: 10px;
+            padding: 12px;
             background: rgba(0, 0, 0, 0.3);
             border: 1px solid rgba(138, 43, 226, 0.3);
             border-radius: 6px;
             color: #fff;
             font-size: 0.9em;
             outline: none;
+            font-family: 'Courier New', monospace;
         }
-        .rotate-input input:focus {
+        .validation-input:focus {
             border-color: #8a2be2;
+            box-shadow: 0 0 10px rgba(138, 43, 226, 0.3);
         }
-        .rotate-hint {
+        .validation-btn {
+            margin-top: 10px;
+            padding: 10px 20px;
+            background: rgba(138, 43, 226, 0.3);
+            border: 1px solid #8a2be2;
+            border-radius: 6px;
+            color: #8a2be2;
+            cursor: pointer;
+            font-size: 0.9em;
+            transition: all 0.3s ease;
+        }
+        .validation-btn:hover {
+            background: rgba(138, 43, 226, 0.5);
+            box-shadow: 0 0 15px rgba(138, 43, 226, 0.4);
+        }
+        .validation-result {
             margin-top: 10px;
             padding: 10px;
-            background: rgba(138, 43, 226, 0.2);
-            border-left: 3px solid #8a2be2;
-            border-radius: 4px;
-            color: #d0d0e0;
-            font-size: 0.9em;
+            border-radius: 6px;
+            font-size: 0.85em;
             display: none;
+        }
+        .validation-result.success {
+            background: rgba(0, 255, 136, 0.1);
+            border: 1px solid #00ff88;
+            color: #00ff88;
+        }
+        .validation-result.error {
+            background: rgba(233, 69, 96, 0.1);
+            border: 1px solid #e94560;
+            color: #e94560;
+        }
+        .hint-item {
+            padding: 20px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            position: relative;
+        }
+        .hint-item.locked {
+            filter: blur(3px);
+            pointer-events: none;
+            opacity: 0.5;
+        }
+        .hint-item.unlocked {
+            animation: unlockGlow 0.6s ease;
+        }
+        @keyframes unlockGlow {
+            0%, 100% { box-shadow: none; }
+            50% { box-shadow: 0 0 20px rgba(138, 43, 226, 0.5); }
+        }
+        .hint-label {
+            color: #8a2be2;
+            font-size: 0.85em;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .hint-text {
+            color: #b8b8c8;
+            font-size: 0.95em;
+            line-height: 1.6;
+        }
+        .lock-icon {
+            font-size: 1.2em;
+        }
+        .footer {
+            margin-top: 50px;
+            padding-top: 25px;
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
+            font-size: 0.9em;
+            color: #666;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
     </style>
 </head>
@@ -216,29 +254,48 @@
             </div>
         </div>
         
-        <div class="hint-panel">
-            <div class="hint-toggle" onclick="toggleHints()">
-                <span>💡 Need a Hint?</span>
-                <span class="hint-arrow" id="hintArrow">▼</span>
+        <div class="hint-console">
+            <div class="console-header" onclick="toggleConsole()">
+                <span class="console-title">🔐 HINT CONSOLE</span>
+                <span class="console-arrow" id="consoleArrow">▼</span>
             </div>
-            <div class="hint-content" id="hintContent">
-                <div class="hint-level">
-                    <div class="hint-level-title">Hint Level 1</div>
-                    <div class="hint-text">Base64 decoding is only the first step.</div>
+            <div class="console-body" id="consoleBody">
+                <div class="validation-box">
+                    <div class="validation-title">Step 1: Base64 Decode</div>
+                    <input type="text" class="validation-input" id="step1Input" placeholder="Enter decoded value...">
+                    <button class="validation-btn" onclick="validateStep1()">Verify</button>
+                    <div class="validation-result" id="step1Result"></div>
                 </div>
-                <div class="hint-level">
-                    <div class="hint-level-title">Hint Level 2</div>
-                    <div class="hint-text">Look for clues about rotation in the HTML comments.</div>
+                
+                <div class="validation-box">
+                    <div class="validation-title">Step 2: Apply Transformation</div>
+                    <input type="text" class="validation-input" id="step2Input" placeholder="Enter final signal...">
+                    <button class="validation-btn" onclick="validateStep2()">Verify</button>
+                    <div class="validation-result" id="step2Result"></div>
                 </div>
-                <div class="hint-level">
-                    <div class="hint-level-title">Hint Level 3</div>
-                    <div class="hint-text">Only letters rotate. Numbers and symbols stay the same.</div>
-                </div>
-                <div class="rotate-input">
-                    <input type="text" id="rotateInput" placeholder="Type a keyword to unlock more help...">
-                    <div class="rotate-hint" id="rotateHint">
-                        💡 ROT = rotation. Try shifting letters backward.
+                
+                <div class="hint-item unlocked" id="hint1">
+                    <div class="hint-label">
+                        <span class="lock-icon">🔓</span>
+                        <span>HINT 1</span>
                     </div>
+                    <div class="hint-text">Start by decoding any Base64 strings you find.</div>
+                </div>
+                
+                <div class="hint-item locked" id="hint2">
+                    <div class="hint-label">
+                        <span class="lock-icon">🔒</span>
+                        <span>HINT 2</span>
+                    </div>
+                    <div class="hint-text">Something rotated. Think alphabet shift.</div>
+                </div>
+                
+                <div class="hint-item locked" id="hint3">
+                    <div class="hint-label">
+                        <span class="lock-icon">🔒</span>
+                        <span>HINT 3</span>
+                    </div>
+                    <div class="hint-text">Wrap it in HTB{...} format.</div>
                 </div>
             </div>
         </div>
@@ -253,24 +310,58 @@
     <script>
         // ZGVidWdfbW9kZV9lbmFibGVk
         const apiEndpoint = "c2Vzc2lvbl90b2tlbl94eXo=";
-        console.log('Page loaded successfully');
         
-        function toggleHints() {
-            const content = document.getElementById('hintContent');
-            const arrow = document.getElementById('hintArrow');
-            content.classList.toggle('open');
+        const h = s => btoa(s.split('').reverse().join(''));
+        const v = [h('svj_6742'), h('psg_6742')];
+        
+        function toggleConsole() {
+            const body = document.getElementById('consoleBody');
+            const arrow = document.getElementById('consoleArrow');
+            body.classList.toggle('open');
             arrow.classList.toggle('open');
         }
         
-        document.getElementById('rotateInput').addEventListener('input', function(e) {
-            const value = e.target.value.toLowerCase();
-            const hint = document.getElementById('rotateHint');
-            if (value === 'rotate' || value === 'rotation') {
-                hint.style.display = 'block';
+        function validateStep1() {
+            const input = document.getElementById('step1Input').value.trim();
+            const result = document.getElementById('step1Result');
+            
+            if (h(input) === v[0]) {
+                result.className = 'validation-result success';
+                result.textContent = '✓ Correct! Unlocking Hint 2...';
+                result.style.display = 'block';
+                unlockHint('hint2');
             } else {
-                hint.style.display = 'none';
+                result.className = 'validation-result error';
+                result.textContent = '✗ Incorrect. Try again.';
+                result.style.display = 'block';
             }
-        });
+        }
+        
+        function validateStep2() {
+            const input = document.getElementById('step2Input').value.trim();
+            const result = document.getElementById('step2Result');
+            
+            if (h(input) === v[1]) {
+                result.className = 'validation-result success';
+                result.textContent = '✓ Signal Extracted! Unlocking final hint...';
+                result.style.display = 'block';
+                unlockHint('hint3');
+            } else {
+                result.className = 'validation-result error';
+                result.textContent = '✗ Incorrect. Try again.';
+                result.style.display = 'block';
+            }
+        }
+        
+        function unlockHint(hintId) {
+            const hint = document.getElementById(hintId);
+            hint.classList.remove('locked');
+            hint.classList.add('unlocked');
+            const icon = hint.querySelector('.lock-icon');
+            icon.textContent = '🔓';
+        }
+        
+        console.log('Page loaded successfully');
     </script>
 </body>
 </html>

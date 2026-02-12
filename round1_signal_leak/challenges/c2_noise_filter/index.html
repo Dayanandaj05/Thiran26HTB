@@ -117,12 +117,6 @@
         input[type="text"]::placeholder {
             color: #666;
         }
-        .search-tooltip {
-            margin-top: 10px;
-            font-size: 0.85em;
-            color: #666;
-            font-style: italic;
-        }
         .activity-log {
             margin-top: 45px;
             padding: 25px;
@@ -149,37 +143,14 @@
         }
         /* decoding_order_matters */
         .hidden { display: none; }
-        .mirror-mode {
-            margin-top: 30px;
-            padding: 20px;
-            background: rgba(138, 43, 226, 0.2);
-            border: 2px solid #8a2be2;
-            border-radius: 12px;
-            animation: mirrorGlow 2s ease-in-out infinite;
-        }
-        @keyframes mirrorGlow {
-            0%, 100% { box-shadow: 0 0 20px rgba(138, 43, 226, 0.3); }
-            50% { box-shadow: 0 0 40px rgba(138, 43, 226, 0.6); }
-        }
-        .mirror-mode h3 {
-            color: #8a2be2;
-            margin-bottom: 10px;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-        }
-        .mirror-mode p {
-            color: #d0d0e0;
-            font-family: 'Courier New', monospace;
-            font-size: 1em;
-        }
-        .hint-panel {
+        .hint-console {
             margin-top: 40px;
-            background: rgba(15, 15, 30, 0.6);
+            background: rgba(15, 15, 30, 0.7);
             border-radius: 12px;
             border: 1px solid rgba(233, 69, 96, 0.3);
             overflow: hidden;
         }
-        .hint-toggle {
+        .console-header {
             padding: 15px 20px;
             background: rgba(233, 69, 96, 0.2);
             cursor: pointer;
@@ -188,44 +159,121 @@
             align-items: center;
             transition: all 0.3s ease;
         }
-        .hint-toggle:hover {
+        .console-header:hover {
             background: rgba(233, 69, 96, 0.3);
         }
-        .hint-toggle span {
+        .console-title {
             color: #e94560;
             font-weight: 600;
             font-size: 0.95em;
         }
-        .hint-arrow {
+        .console-arrow {
             color: #e94560;
             transition: transform 0.3s ease;
         }
-        .hint-arrow.open {
+        .console-arrow.open {
             transform: rotate(180deg);
         }
-        .hint-content {
+        .console-body {
             max-height: 0;
             overflow: hidden;
             transition: max-height 0.4s ease;
         }
-        .hint-content.open {
-            max-height: 500px;
+        .console-body.open {
+            max-height: 800px;
         }
-        .hint-level {
+        .validation-box {
             padding: 20px;
-            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
         }
-        .hint-level-title {
+        .validation-title {
             color: #00d4ff;
+            font-size: 0.9em;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        .validation-input {
+            width: 100%;
+            padding: 12px;
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(233, 69, 96, 0.3);
+            border-radius: 6px;
+            color: #fff;
+            font-size: 0.9em;
+            outline: none;
+            font-family: 'Courier New', monospace;
+        }
+        .validation-input:focus {
+            border-color: #e94560;
+            box-shadow: 0 0 10px rgba(233, 69, 96, 0.3);
+        }
+        .validation-btn {
+            margin-top: 10px;
+            padding: 10px 20px;
+            background: rgba(233, 69, 96, 0.3);
+            border: 1px solid #e94560;
+            border-radius: 6px;
+            color: #e94560;
+            cursor: pointer;
+            font-size: 0.9em;
+            transition: all 0.3s ease;
+        }
+        .validation-btn:hover {
+            background: rgba(233, 69, 96, 0.5);
+            box-shadow: 0 0 15px rgba(233, 69, 96, 0.4);
+        }
+        .validation-result {
+            margin-top: 10px;
+            padding: 10px;
+            border-radius: 6px;
+            font-size: 0.85em;
+            display: none;
+        }
+        .validation-result.success {
+            background: rgba(0, 255, 136, 0.1);
+            border: 1px solid #00ff88;
+            color: #00ff88;
+        }
+        .validation-result.error {
+            background: rgba(233, 69, 96, 0.1);
+            border: 1px solid #e94560;
+            color: #e94560;
+        }
+        .hint-item {
+            padding: 20px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            position: relative;
+        }
+        .hint-item.locked {
+            filter: blur(3px);
+            pointer-events: none;
+            opacity: 0.5;
+        }
+        .hint-item.unlocked {
+            animation: unlockGlow 0.6s ease;
+        }
+        @keyframes unlockGlow {
+            0%, 100% { box-shadow: none; }
+            50% { box-shadow: 0 0 20px rgba(233, 69, 96, 0.5); }
+        }
+        .hint-label {
+            color: #e94560;
             font-size: 0.85em;
             text-transform: uppercase;
             letter-spacing: 1px;
-            margin-bottom: 10px;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
         .hint-text {
             color: #b8b8c8;
             font-size: 0.95em;
             line-height: 1.6;
+        }
+        .lock-icon {
+            font-size: 1.2em;
         }
     </style>
 </head>
@@ -254,7 +302,6 @@
             <input type="hidden" name="token" value="Z2RwSCMvJS4=">
             <input type="hidden" name="backup" value="Y29uZmlnX2JhY2t1cF8yMDI0">
             <input type="text" id="searchInput" placeholder="Search system logs...">
-            <div class="search-tooltip">Hint: Bitwise operations can transform text.</div>
         </form>
         
         <div id="mirrorReveal" class="hidden"></div>
@@ -268,23 +315,48 @@
             <div class="log-entry">14:28:33 - XOR cipher module loaded</div>
         </div>
         
-        <div class="hint-panel">
-            <div class="hint-toggle" onclick="toggleHints()">
-                <span>💡 Need a Hint?</span>
-                <span class="hint-arrow" id="hintArrow">▼</span>
+        <div class="hint-console">
+            <div class="console-header" onclick="toggleConsole()">
+                <span class="console-title">🔐 HINT CONSOLE</span>
+                <span class="console-arrow" id="consoleArrow">▼</span>
             </div>
-            <div class="hint-content" id="hintContent">
-                <div class="hint-level">
-                    <div class="hint-level-title">Hint Level 1</div>
-                    <div class="hint-text">Decode the Base64 first.</div>
+            <div class="console-body" id="consoleBody">
+                <div class="validation-box">
+                    <div class="validation-title">Step 1: Base64 Decode</div>
+                    <input type="text" class="validation-input" id="step1Input" placeholder="Enter decoded value...">
+                    <button class="validation-btn" onclick="validateStep1()">Verify</button>
+                    <div class="validation-result" id="step1Result"></div>
                 </div>
-                <div class="hint-level">
-                    <div class="hint-level-title">Hint Level 2</div>
-                    <div class="hint-text">The CSS contains a hexadecimal clue.</div>
+                
+                <div class="validation-box">
+                    <div class="validation-title">Step 2: Apply XOR</div>
+                    <input type="text" class="validation-input" id="step2Input" placeholder="Enter final signal...">
+                    <button class="validation-btn" onclick="validateStep2()">Verify</button>
+                    <div class="validation-result" id="step2Result"></div>
                 </div>
-                <div class="hint-level">
-                    <div class="hint-level-title">Hint Level 3</div>
-                    <div class="hint-text">XOR works character by character using ASCII values.</div>
+                
+                <div class="hint-item unlocked" id="hint1">
+                    <div class="hint-label">
+                        <span class="lock-icon">🔓</span>
+                        <span>HINT 1</span>
+                    </div>
+                    <div class="hint-text">Decode first. The result won't look clean.</div>
+                </div>
+                
+                <div class="hint-item locked" id="hint2">
+                    <div class="hint-label">
+                        <span class="lock-icon">🔒</span>
+                        <span>HINT 2</span>
+                    </div>
+                    <div class="hint-text">Look for hex values in CSS comments.</div>
+                </div>
+                
+                <div class="hint-item locked" id="hint3">
+                    <div class="hint-label">
+                        <span class="lock-icon">🔒</span>
+                        <span>HINT 3</span>
+                    </div>
+                    <div class="hint-text">Single-byte XOR key.</div>
                 </div>
             </div>
         </div>
@@ -296,13 +368,55 @@
     
     <script>
         const sessionKey = "c2Vzc2lvbl90b2tlbl94eXo=";
-        // encryption_method: xor_single_byte
         
-        function toggleHints() {
-            const content = document.getElementById('hintContent');
-            const arrow = document.getElementById('hintArrow');
-            content.classList.toggle('open');
+        const h = s => btoa(s.split('').reverse().join(''));
+        const v = [h('gdpH#/%.'), h('psg_4829')];
+        
+        function toggleConsole() {
+            const body = document.getElementById('consoleBody');
+            const arrow = document.getElementById('consoleArrow');
+            body.classList.toggle('open');
             arrow.classList.toggle('open');
+        }
+        
+        function validateStep1() {
+            const input = document.getElementById('step1Input').value.trim();
+            const result = document.getElementById('step1Result');
+            
+            if (h(input) === v[0]) {
+                result.className = 'validation-result success';
+                result.textContent = '✓ Correct! Unlocking Hint 2...';
+                result.style.display = 'block';
+                unlockHint('hint2');
+            } else {
+                result.className = 'validation-result error';
+                result.textContent = '✗ Incorrect. Try again.';
+                result.style.display = 'block';
+            }
+        }
+        
+        function validateStep2() {
+            const input = document.getElementById('step2Input').value.trim();
+            const result = document.getElementById('step2Result');
+            
+            if (h(input) === v[1]) {
+                result.className = 'validation-result success';
+                result.textContent = '✓ Signal Extracted! Unlocking final hint...';
+                result.style.display = 'block';
+                unlockHint('hint3');
+            } else {
+                result.className = 'validation-result error';
+                result.textContent = '✗ Incorrect. Try again.';
+                result.style.display = 'block';
+            }
+        }
+        
+        function unlockHint(hintId) {
+            const hint = document.getElementById(hintId);
+            hint.classList.remove('locked');
+            hint.classList.add('unlocked');
+            const icon = hint.querySelector('.lock-icon');
+            icon.textContent = '🔓';
         }
         
         document.getElementById('searchInput').addEventListener('input', function(e) {
